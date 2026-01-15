@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> <!-- character encoding -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- responsive design -->
+    <title>Organise Your Life</title> <!-- page title -->
+    <link rel="stylesheet" href="style.css"> <!-- link to external CSS -->
+</head>
+<body>
+    <!-- Main container card -->
+    <div class="container">
+        <!-- App title -->
+        <h1>📝 My To-Do List</h1>
+        
+        <!-- Notification permission banner (shown when needed) -->
+        <div id="notificationBanner" class="notification-banner" style="display: none;">
+            <span>Enable notifications to get reminders for your tasks</span>
+            <button onclick="requestNotificationPermission()">Enable</button>
+        </div>
+
+        <!-- Input section for adding new tasks -->
+        <div class="input-container">
+            <input type="text" id="todoInput" placeholder="What needs to be done?" />
+            <div class="datetime-add-row">
+                <input type="date" id="todoDate" class="datetime-input" />
+                <input type="time" id="todoTime" class="datetime-input" />
+                <button id="addBtn">Add</button>
+            </div>
+        </div>
+
+        <!-- Filter buttons with counters -->
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">
+                All
+                <span class="counter" id="allCount">0</span>
+            </button>
+            <button class="filter-btn" data-filter="active">
+                Active
+                <span class="counter" id="activeCount">0</span>
+            </button>
+            <button class="filter-btn" data-filter="completed">
+                Completed
+                <span class="counter" id="completedCount">0</span>
+            </button>
+        </div>
+
+        <!-- Main list where tasks will be rendered -->
+        <ul id="todoList"></ul>
+
+        <!-- Footer with stats and bulk actions -->
+        <div class="stats">
+            <span id="itemsLeft">0 items left</span>
+            <div class="button-group">
+                <button class="clear-completed" id="clearCompleted">Clear Completed</button>
+                <button class="empty-all" id="emptyAll">Empty All Tasks</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script> <!-- link to external JavaScript -->
+</body>
+</html>

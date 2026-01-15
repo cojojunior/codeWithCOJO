@@ -1,0 +1,881 @@
+/* ===================================
+   UNIVERSAL RESET & BOX MODEL
+   =================================== */
+/* Remove default browser margins and paddings from all elements
+   border-box ensures padding and borders are included in width/height calculations */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===================================
+           BODY & BACKGROUND STYLING
+           =================================== */
+        
+        /* Main body styling with animated background gradient overlay
+           - Uses Segoe UI font for clean, modern appearance
+           - Gradient layer (50% dark purple/black) positioned over background image
+           - background-attachment: fixed keeps background stationary while scrolling
+           - Flexbox centers the container both horizontally and vertically
+           - min-height: 100vh ensures background covers full viewport height
+           - animation adds subtle continuous background movement */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Layer gradient over background image for better contrast */
+            background: linear-gradient(135deg, rgba(50, 15, 55, 0.696) 0%, rgba(18, 0, 16, 0.9) 100%),
+                        url('https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=2072') center/cover no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            animation: backgroundMove 40s ease-in-out infinite;
+        }
+
+        /* Keyframes for subtle background movement animation
+           Creates a panning effect that zooms in and moves the background image
+           This provides a dynamic, constantly evolving visual effect
+           - 0% & 100%: Background at normal position and size
+           - 25% & 75%: Background zooms to 110% and shifts position
+           - 50%: Background returns to center at normal size */
+        @keyframes backgroundMove {
+            0% { 
+                background-position: 0% 0%;
+                background-size: 100% 100%;
+            }
+            25% { 
+                background-position: 100% 0%;
+                background-size: 110% 110%;
+            }
+            50% { 
+                background-position: 100% 100%;
+                background-size: 100% 100%;
+            }
+            75% { 
+                background-position: 0% 100%;
+                background-size: 110% 110%;
+            }
+            100% { 
+                background-position: 0% 0%;
+                background-size: 100% 100%;
+            }
+        }
+
+        /* Animated shimmer effect overlay on background (pseudo-element)
+           Creates a subtle light streak that moves across the screen
+           - position: fixed ensures it stays in place relative to viewport
+           - width/height: 100% covers entire screen
+           - animation creates a continuous diagonal shimmer effect
+           - pointer-events: none allows clicks to pass through to elements below */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Diagonal gradient that moves across the screen */
+            background: linear-gradient(45deg, 
+                transparent 0%, 
+                rgba(0, 0, 0, 0.556) 25%, 
+                transparent 50%, 
+                rgb(38, 1, 47) 75%, 
+                transparent 100%);
+            background-size: 200% 200%;
+            animation: shimmer 15s ease-in-out infinite;
+            pointer-events: none; /* Allow clicks to pass through */
+            z-index: 0;
+        }
+
+        /* Keyframes for shimmer animation - moves gradient diagonally
+           Creates the illusion of a light streak moving across the background
+           - 0% & 100%: Gradient starts at top-left corner
+           - 50%: Gradient positioned at bottom-right corner
+           - background-size must be larger than container for movement to be visible */
+        @keyframes shimmer {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* ===================================
+           MAIN CONTAINER
+           =================================== */
+        
+        /* Central white card container with glassmorphism effect
+           - background: rgba creates semi-transparent white base
+           - backdrop-filter: blur creates frosted glass appearance by blurring background
+           - border-radius: 20px creates smooth, rounded corners
+           - Multiple box-shadows create depth and elevation effect
+           - max-width: 550px ensures container doesn't get too wide on large screens
+           - position: relative & z-index: 1 ensures container sits above background effects */
+        .container {
+            background: rgba(255, 255, 255, 0.15); /* More transparent for glassy effect */
+            backdrop-filter: blur(20px) saturate(180%); /* Stronger blur and saturation */
+            -webkit-backdrop-filter: blur(20px) saturate(180%); /* Safari support */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border for glass edge */
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37),
+                        0 30px 60px rgba(0, 0, 0, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.4); /* Multiple shadows for depth */
+            width: 100%;
+            max-width: 550px;
+            padding: 30px;
+            position: relative;
+            z-index: 1; /* Ensure container appears above shimmer effect */
+        }
+
+        /* Duplicate body::before pseudo-element (should be removed - this is leftover code)
+           Kept from original but now superseded by first body::before definition above */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Diagonal gradient that moves across the screen */
+            background: linear-gradient(45deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.05) 25%, 
+                transparent 50%, 
+                rgba(255, 255, 255, 0.05) 75%, 
+                transparent 100%);
+            background-size: 200% 200%;
+            animation: shimmer 15s ease-in-out infinite;
+            pointer-events: none; /* Allow clicks to pass through */
+            z-index: 0;
+        }
+
+        /* Duplicate keyframes definition and container (leftover code to be removed)
+           Original @keyframes shimmer and .container already defined above */
+        @keyframes shimmer {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* ===================================
+           MAIN CONTAINER (DUPLICATE - Remove)
+           =================================== */
+        
+        /* Duplicate container styling - use the one defined above */
+        .container {
+            background: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
+            backdrop-filter: blur(10px); /* Blur background behind container */
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 550px;
+            padding: 30px;
+            position: relative;
+            z-index: 1; /* Ensure container appears above shimmer effect */
+        }
+
+        /* ===================================
+           HEADER
+           =================================== */
+        
+        /* Main title styling
+           - color: #333 provides dark gray for good contrast against white background
+           - text-align: center ensures title is centered horizontally
+           - margin-bottom: 30px creates space between title and input section
+           - font-size: 2em makes the title prominent and easy to read */
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        /* ===================================
+           INPUT SECTION
+           =================================== */
+        
+        /* Container for input field and add button
+           - margin-bottom: 30px creates spacing below this section
+           - padding-bottom: 25px adds internal spacing before the border
+           - border-bottom creates a visual separator between input and filter buttons */
+        .input-container {
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid #e0e0e0; /* Separator line below input */
+        }
+
+        /* Text input field for new tasks
+           - width: 100% makes it span full container width
+           - padding: 12px 15px provides comfortable internal spacing
+           - border: 2px solid #e0e0e0 creates visible border
+           - border-radius: 8px creates slightly rounded corners
+           - transition: border-color 0.3s smoothly animates border color changes
+           - margin-bottom: 10px creates space between task input and datetime inputs */
+        #todoInput {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            margin-bottom: 10px;
+        }
+
+        /* Highlight input border when focused
+           - outline: none removes default blue outline
+           - border-color: #667eea changes border to purple/blue indicating focus */
+        #todoInput:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Container for date/time inputs and add button
+           - display: flex enables flexible layout for child elements
+           - gap: 10px creates consistent spacing between date, time, and add button
+           - align-items: center vertically centers items with different heights */
+        .datetime-add-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        /* Date and time input styling
+           - flex: 1 makes each input grow equally to fill available space
+           - padding: 10px 12px provides reasonable internal spacing
+           - border: 2px solid #e0e0e0 matches the main input field style
+           - border-radius: 8px maintains consistent rounded corners
+           - transition: border-color 0.3s smoothly animates focus state */
+        .datetime-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        /* Focus state for date/time inputs
+           - Same styling as #todoInput:focus for consistency */
+        .datetime-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Add button styling
+           - padding: 10px 25px provides comfortable button size
+           - background: #667eea uses brand blue/purple color
+           - color: white ensures good contrast
+           - border: none removes default button border
+           - border-radius: 8px maintains rounded corner style
+           - cursor: pointer changes mouse cursor to indicate clickability
+           - transition: background 0.3s smoothly animates hover effect
+           - font-weight: 600 makes text bold for prominence
+           - white-space: nowrap prevents button text from wrapping to next line */
+        #addBtn {
+            padding: 10px 25px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Darken add button on hover to provide visual feedback
+           - Slightly darker shade (#5568d3) indicates the button is interactive */
+        #addBtn:hover {
+            background: #5568d3;
+        }
+
+        /* ===================================
+           FILTER BUTTONS
+           =================================== */
+        
+        /* Container for All/Active/Completed filter buttons
+           - display: flex enables horizontal alignment of buttons
+           - gap: 10px creates consistent spacing between buttons
+           - margin-bottom: 20px provides space before the task list
+           - justify-content: center aligns buttons to the center
+           - align-items: center vertically centers the buttons */
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Individual filter button styling
+           - padding: 8px 16px provides button dimensions
+           - background: #f5f5f5 uses light gray default appearance
+           - border: 2px solid transparent allows space for active state border
+           - border-radius: 6px creates slightly rounded corners
+           - cursor: pointer indicates clickability
+           - transition: all 0.3s smoothly animates all property changes
+           - font-size: 14px matches smaller text for filter section
+           - position: relative required for absolute positioning of counter badge */
+        .filter-btn {
+            padding: 8px 16px;
+            background: #f5f5f5;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            position: relative; /* For absolute positioning of counter badge */
+        }
+
+        /* Counter badge that appears on top-right of each filter button
+           - position: absolute with top: -8px, right: -8px places it outside corner
+           - background: #ff0000ca uses red with transparency for visibility
+           - border-radius: 50% creates a perfect circle shape
+           - width/height: 22px ensures square dimensions that become circular
+           - display: flex, align-items/justify-content: center centers the number inside
+           - font-size: 11px keeps the counter text small
+           - font-weight: bold makes the number stand out
+           - box-shadow: 0 2px 4px creates depth and shadow */
+        .filter-btn .counter {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff0000ca;
+            color: white;
+            border-radius: 50%; /* Make it circular */
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Invert counter colors when filter button is active
+           - white background with purple text indicates active state
+           - This creates visual distinction from inactive counter badges */
+        .filter-btn.active .counter {
+            background: white;
+            color: #667eea;
+        }
+
+        /* Active filter button styling
+           - background: #667eea changes to purple/blue
+           - color: white ensures text is visible on purple background
+           - border-color: #667eea adds matching colored border
+           - Together these indicate which filter is currently selected */
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Highlight filter button border on hover
+           - border-color: #667eea provides visual feedback on hover
+           - Users can see which button they're about to click */
+        .filter-btn:hover {
+            border-color: #667eea;
+        }
+
+        /* ===================================
+           TODO LIST
+           =================================== */
+        
+        /* Main unordered list container for tasks
+           - list-style: none removes the default bullet points
+           - Tasks will use custom styling instead */
+        #todoList {
+            list-style: none;
+        }
+
+        /* Individual task item styling
+           - display: flex with flex-direction: column stacks content vertically
+           - padding: 15px provides internal spacing around task content
+           - background: #f9f9f9 uses light gray background for task items
+           - border-radius: 8px creates rounded corners
+           - margin-bottom: 10px creates spacing between tasks
+           - transition: all 0.3s smoothly animates hover effects
+           - animation: slideIn 0.3s ease plays when tasks are added (entrance effect) */
+        .todo-item {
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+            animation: slideIn 0.3s ease; /* Animate when added */
+        }
+
+        /* Slide-in animation for new tasks
+           - from: opacity 0 and translateY -10px means task starts invisible and above
+           - to: opacity 1 and translateY 0 means task fades in and moves down
+           - Creates smooth, professional entrance effect for new tasks */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Slight movement and background change on hover
+           - background: #f0f0f0 darkens the background slightly
+           - transform: translateX(5px) shifts task right by 5 pixels
+           - Provides interactive feedback when user hovers over task */
+        .todo-item:hover {
+            background: #f0f0f0;
+            transform: translateX(5px);
+        }
+
+        /* Completed task styling - green background instead of strikethrough
+           - background: #e8f5e9 uses light green background
+           - border-left: 4px solid #4caf50 adds green accent bar on left side
+           - Visually distinguishes completed tasks from active ones */
+        .todo-item.completed {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+        }
+
+        /* Main row with checkbox, text, and action buttons
+           - display: flex enables horizontal layout
+           - align-items: center vertically centers all elements
+           - gap: 10px creates consistent spacing between checkbox, text, and buttons */
+        .todo-main-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Checkbox for marking tasks complete
+           - width/height: 20px sets checkbox dimensions
+           - cursor: pointer indicates it's clickable
+           - flex-shrink: 0 prevents checkbox from shrinking */
+        .todo-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        /* Task text and datetime container
+           - flex: 1 makes this element grow to fill available space
+           - min-width: 0 allows flex child to shrink below content size (important for text wrapping) */
+        .todo-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Task text styling
+           - font-size: 16px makes task text readable
+           - color: #333 uses dark gray for good contrast
+           - word-wrap: break-word ensures long text wraps to next line
+           - margin-bottom: 4px adds space between task text and datetime */
+        .todo-text {
+            font-size: 16px;
+            color: #333;
+            word-wrap: break-word;
+            margin-bottom: 4px;
+        }
+
+        /* Completed task text - darker green, no strikethrough
+           - color: #2e7d32 uses dark green indicating completed status
+           - font-weight: 500 makes text slightly bold for emphasis */
+        .todo-item.completed .todo-text {
+            color: #2e7d32;
+            font-weight: 500;
+        }
+
+        /* Date and time display styling
+           - font-size: 12px makes datetime smaller than task text
+           - color: #666 uses medium gray for secondary information
+           - display: flex with gap: 8px allows multiple datetime items to sit horizontally
+           - margin-top: 4px separates from task text above */
+        .todo-datetime {
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        /* Individual datetime item container
+           - display: flex enables horizontal alignment
+           - align-items: center vertically centers icon with text
+           - gap: 4px creates small space between icon and text */
+        .todo-datetime-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Action buttons container (Edit, Delete, Bell)
+           - display: flex enables horizontal layout of buttons
+           - gap: 5px creates small spacing between buttons
+           - flex-shrink: 0 prevents buttons from shrinking on small screens */
+        .todo-actions {
+            display: flex;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+
+        /* ===================================
+           ACTION BUTTONS (Edit, Delete, Bell)
+           =================================== */
+        
+        /* Bell/reminder button for task notifications
+           - background: #9b59b6 uses purple color for reminder/notification context
+           - color: white ensures visible text on purple background
+           - border: none removes default button border
+           - padding: 6px 10px keeps button compact
+           - border-radius: 6px creates slightly rounded appearance
+           - cursor: pointer indicates clickability
+           - transition: background 0.3s smoothly animates hover effect
+           - width/height: 32px creates square button shape
+           - display: flex with align/justify-center centers the bell icon inside */
+        .bell-btn {
+            background: #9b59b6;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 16px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Bell button hover state - slightly darker purple */
+        .bell-btn:hover {
+            background: #8e44ad;
+        }
+
+        /* Bell button active state - green background indicates notification is active
+           - background: #27ae60 uses green to clearly show reminders are enabled */
+        .bell-btn.active {
+            background: #27ae60;
+        }
+
+        /* Edit button styling
+           - background: #ffa502 uses orange to indicate editing/modification action
+           - color: white ensures good contrast on orange background
+           - border: none removes default button styling
+           - padding: 6px 10px provides appropriate button size
+           - border-radius: 6px maintains consistent rounded corners
+           - cursor: pointer indicates clickability
+           - transition: background 0.3s smoothly animates hover effect
+           - font-size: 14px keeps button text reasonable size
+           - height: 32px ensures consistent height with other action buttons */
+        .edit-btn {
+            background: #ffa502;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 14px;
+            height: 32px;
+        }
+
+        /* Darken edit button on hover to provide visual feedback
+           - Slightly darker shade (#ff7f00) indicates button is interactive */
+        .edit-btn:hover {
+            background: #ff7f00;
+        }
+
+        /* Delete button - shows "×" symbol
+           - background: #ff4757 uses red color for destructive action
+           - color: white ensures symbol is visible
+           - border: none removes default styling
+           - padding: 6px 10px provides space around symbol
+           - border-radius: 6px creates rounded corners
+           - cursor: pointer indicates clickability
+           - transition: background 0.3s smoothly animates hover effect
+           - font-size: 16px makes the × symbol larger and more visible
+           - font-weight: bold makes symbol more prominent
+           - line-height: 1 prevents extra vertical spacing around symbol
+           - width/height: 32px creates square button (circular with border-radius)
+           - display: flex with align/justify-center centers the × symbol */
+        .delete-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 1;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Darken delete button on hover
+           - Darker red (#e84118) provides visual feedback
+           - Color change emphasizes this is a destructive action */
+        .delete-btn:hover {
+            background: #e84118;
+        }
+
+        /* ===================================
+           EDIT MODE STYLING
+           =================================== */
+        
+        /* Edit mode container
+           - display: flex with flex-direction: column stacks form elements vertically
+           - gap: 10px creates consistent spacing between input fields and buttons */
+        .edit-mode-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Input field when editing a task
+           - width: 100% makes it span full width of container
+           - padding: 8px 12px provides internal spacing for text
+           - border: 2px solid #667eea uses brand color to indicate edit mode
+           - border-radius: 6px creates rounded corners
+           - font-size: 16px keeps text readable and matches task text size */
+        .edit-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #667eea;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        /* Edit datetime row - contains date and time inputs
+           - display: flex enables horizontal layout
+           - gap: 10px creates spacing between date and time inputs */
+        .edit-datetime-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Edit action buttons row - contains save and cancel buttons
+           - display: flex enables horizontal layout
+           - gap: 8px creates small spacing between buttons
+           - justify-content: flex-end aligns buttons to the right side */
+        .edit-actions-row {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        /* Save button in edit mode
+           - background: #2ecc71 uses green color to indicate positive/save action
+           - color: white ensures good contrast on green background
+           - border: none removes default button styling
+           - padding: 8px 12px provides appropriate button dimensions
+           - border-radius: 6px creates rounded corners
+           - cursor: pointer indicates clickability
+           - transition: background 0.3s smoothly animates hover effect
+           - font-size: 14px keeps button text proportional */
+        .save-btn {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 14px;
+        }
+
+        /* Darken save button on hover to provide visual feedback
+           - Darker green (#27ae60) indicates button is interactive */
+        .save-btn:hover {
+            background: #27ae60;
+        }
+
+        /* Cancel button in edit mode
+           - background: #95a5a6 uses neutral gray color for non-destructive cancel action
+           - color: white ensures visible text on gray background
+           - border: none removes default styling
+           - padding: 8px 12px matches save button dimensions
+           - border-radius: 6px maintains consistent rounded corners
+           - cursor: pointer indicates clickability
+           - transition: background 0.3s smoothly animates hover effect
+           - font-size: 14px matches save button text size */
+        .cancel-btn {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 14px;
+        }
+
+        /* Darken cancel button on hover
+           - Slightly darker gray (#7f8c8d) provides visual feedback on hover */
+        .cancel-btn:hover {
+            background: #7f8c8d;
+        }
+
+        /* ===================================
+           EMPTY STATE
+           =================================== */
+        
+        /* Message shown when no tasks match current filter
+           - text-align: center centers the empty state message
+           - padding: 40px 20px provides generous spacing around message
+           - color: #999 uses light gray to indicate secondary/informational text
+           - This style is typically applied to a <div> or <p> element in the #todoList */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        /* ===================================
+           FOOTER STATS & ACTIONS
+           =================================== */
+        
+        /* Bottom section with stats and bulk action buttons
+           - display: flex with justify-content: space-between creates space between items count and buttons
+           - align-items: center vertically centers all content
+           - margin-top: 20px separates footer from task list above
+           - padding-top: 20px adds space before the top border
+           - border-top: 2px solid #e0e0e0 creates visual separator
+           - font-size: 14px makes stats text slightly smaller
+           - color: #666 uses medium gray for secondary information
+           - gap: 10px creates spacing that helps with wrapping on small screens */
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            font-size: 14px;
+            color: #666;
+            gap: 10px;
+        }
+
+        /* Container for action buttons (Clear Completed, Empty All)
+           - display: flex enables horizontal layout of buttons
+           - gap: 8px creates consistent spacing between buttons
+           - flex-wrap: wrap allows buttons to wrap to next line on very small screens */
+        .button-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* Clear Completed button - removes finished tasks from list
+           - background: #ff6b6b uses light red to indicate task removal
+           - color: white ensures visible text on red background
+           - border: none removes default button styling
+           - padding: 8px 16px provides appropriate button size
+           - border-radius: 6px creates rounded corners
+           - cursor: pointer indicates clickability
+           - font-size: 14px keeps button text readable
+           - transition: background 0.3s smoothly animates hover effect
+           - white-space: nowrap prevents button text from wrapping */
+        .clear-completed {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+        /* Darken clear completed button on hover
+           - Slightly darker red (#ee5a52) provides visual feedback */
+        .clear-completed:hover {
+            background: #ee5a52;
+        }
+
+        /* Empty All Tasks button - clears entire task list (destructive action)
+           - background: #e74c3c uses darker red to emphasize destructive nature
+           - color: white ensures visible text on red background
+           - border: none removes default styling
+           - padding: 8px 16px matches other action button dimensions
+           - border-radius: 6px maintains consistent rounded corners
+           - cursor: pointer indicates clickability
+           - font-size: 14px keeps proportional text size
+           - transition: background 0.3s smoothly animates hover effect
+           - white-space: nowrap prevents button text from wrapping to multiple lines */
+        .empty-all {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+            white-space: nowrap;
+        }
+
+        /* Darken empty all button on hover
+           - Much darker red (#c0392b) emphasizes this is a destructive action */
+        .empty-all:hover {
+            background: #c0392b;
+        }
+
+        /* Notification permission banner - requests user to enable browser notifications
+           - background: #fff3cd uses light yellow to indicate informational message
+           - border: 1px solid #ffc107 uses warning yellow for border
+           - border-radius: 8px creates rounded corners for softer appearance
+           - padding: 12px 15px provides internal spacing
+           - margin-bottom: 20px separates banner from main content below
+           - display: flex with justify-content: space-between places button on right
+           - align-items: center vertically centers banner content
+           - font-size: 14px keeps text readable but secondary */
+        .notification-banner {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        /* Enable button within notification banner
+           - background: #ffc107 uses warning yellow color to match banner
+           - border: none removes default styling
+           - padding: 6px 12px provides button dimensions
+           - border-radius: 4px creates slightly rounded button corners
+           - cursor: pointer indicates clickability
+           - font-weight: 600 makes button text bold for emphasis */
+        .notification-banner button {
+            background: #ffc107;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Darken notification banner button on hover
+           - Slightly darker yellow (#ffb300) provides visual feedback */
+        .notification-banner button:hover {
+            background: #ffb300;
+        }
