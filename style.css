@@ -53,7 +53,7 @@ body.light {
 /* Main body element with animated gradient background and flexbox layout */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Clean, modern font stack that works across all platforms */
-    background: linear-gradient(135deg, rgba(50, 15, 55, 0.696) 0%, rgba(18, 0, 16, 0.9) 100%),
+    background: linear-gradient(135deg, rgba(7, 1, 7, 0.696) 0%, rgba(18, 0, 16, 0.9) 100%),
 url('https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=2072') center/cover no-repeat; /* Dark purple gradient overlay on background image */
     background-attachment: fixed; /* Background stays fixed while scrolling for parallax effect */
     min-height: 100vh; /* Full viewport height ensuring page fills screen */
@@ -208,17 +208,18 @@ body::before {
     flex-direction: row; /* Arrange items horizontally */
     justify-content: center; /* Center items horizontally */
     align-items: center; /* Center items vertically */
-    gap: 15px; /* Space between logo and text */
-    margin-bottom: 30px; /* Space below header before input section */
+    gap: 12px; /* Space between logo and text */
+    margin-bottom: 25px; /* Space below header before input section */
 }
 
 /* Application logo image
    Includes drop shadow and pulsing animation for visual interest */
 .app-logo {
-    width: 100px; /* Logo width */
-    height: 85px; /* Logo height */
+    width: 80px; /* Logo width */
+    height: 70px; /* Logo height */
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1)); /* Subtle shadow effect */
     animation: logoPulse 1.5s ease-in-out infinite; /* Continuous gentle pulsing */
+    flex-shrink: 0; /* Don't shrink on small screens */
 }
 
 /* Container for app title and motto
@@ -227,25 +228,29 @@ body::before {
     display: flex; /* Flexbox layout */
     flex-direction: column; /* Stack items vertically */
     align-items: flex-start; /* Align to left side */
+    justify-content: center; /* Center vertically */
 }
 
 /* Main application title text
    Large, prominent text in primary color */
 .app-title {
     color: var(--text-main); /* Text color from theme variable */
-    font-size: 2.1em; /* Large heading size */
+    font-size: 2em; /* Large heading size */
     font-weight: 700; /* Bold weight for emphasis */
     letter-spacing: 1px; /* Increased letter spacing for elegance */
+    margin: 0; /* Remove default margins */
+    line-height: 1.2; /* Tight line height */
 }
 
 /* App motto/tagline text
    Smaller, italicized text below title */
 .app-motto {
     color: #a8a4a4; /* Gray color */
-    font-size: 1em; /* Normal text size */
+    font-size: 0.85em; /* Smaller text size */
     font-style: italic; /* Italicized for distinction */
     opacity: 0.85; /* Slightly transparent */
-    margin-top: 5px; /* Space above motto */
+    margin-top: 4px; /* Space above motto */
+    margin-bottom: 0; /* Remove bottom margin */
 }
 
 /* ========================================================================
@@ -310,12 +315,90 @@ input {
     font-size: 13px; /* Smaller font size for compact layout */
     transition: border-color 0.3s; /* Smooth focus transition */
     min-width: 100px; /* Minimum width to prevent squishing */
+    color: #333; /* Text color */
+}
+
+/* Display "Date" placeholder text for date input */
+#todoDate::-webkit-calendar-picker-indicator {
+    display: none; /* Hide the calendar icon */
+}
+
+#todoTime::-webkit-calendar-picker-indicator {
+    display: none; /* Hide the time icon */
+}
+
+/* Floating label wrapper */
+.input-wrap {
+    position: relative;
+    flex: 1 1 auto;
+}
+
+.input-wrap .datetime-input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Floating label placed after input so we can use input:focus + label */
+.float-label {
+    text-align: center;
+    position: absolute;
+    left: 12px;
+    top: 8px;
+    pointer-events: none;
+    color: #9b9b9b;
+    font-size: 15px;
+    background: transparent;
+    padding: 0 4px;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+/* Hide label when input focused */
+.input-wrap .datetime-input:focus + .float-label,
+/* Hide when input has value via JS toggled class */
+.input-wrap .datetime-input.has-value + .float-label {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+}
+
+/* Hide native date/time display when input is empty and not focused
+   so only the floating label is visible. Reveal text on focus or when
+   the input has a value (class .has-value toggled by JS). */
+.input-wrap .datetime-input:not(:focus):not(.has-value) {
+    color: transparent; /* Hide visible formatted text */
+}
+
+/* WebKit-specific selectors to ensure internal date/time text is hidden */
+.input-wrap .datetime-input:not(:focus):not(.has-value)::-webkit-datetime-edit,
+.input-wrap .datetime-input:not(:focus):not(.has-value)::-webkit-datetime-edit-text,
+.input-wrap .datetime-input:not(:focus):not(.has-value)::-webkit-datetime-edit-month-field,
+.input-wrap .datetime-input:not(:focus):not(.has-value)::-webkit-datetime-edit-day-field,
+.input-wrap .datetime-input:not(:focus):not(.has-value)::-webkit-datetime-edit-year-field,
+.input-wrap .datetime-input:not(:focus):not(.has-value)::-webkit-datetime-edit-hour-field,
+.input-wrap .datetime-input:not(:focus):not(.has-value)::-webkit-datetime-edit-minute-field {
+    color: transparent !important;
+}
+
+/* Ensure text is visible when focused or when value exists */
+.input-wrap .datetime-input:focus,
+.input-wrap .datetime-input.has-value {
+    color: #333;
+}
+
+/* For browsers that render a placeholder-like hint via pseudo-elements,
+   try hiding the placeholder text color when inactive (fallback). */
+.input-wrap .datetime-input:not(:focus):not(.has-value)::-webkit-input-placeholder {
+    color: transparent;
 }
 
 /* Date/time input focused state */
 .datetime-input:focus {
     outline: none; /* Remove default outline */
     border-color: #667eea; /* Change to primary color */
+}
+
+/* Use valid date input styling */
+#todoDate:valid {
+    color: #333; /* Dark text when value is set */
 }
 
 /* Add button styling
@@ -1360,12 +1443,14 @@ input {
     
     /* Logo size adjustment */
     .app-logo {
+        flex-direction: row; 
         width: 70px; /* Reduced width */
         height: 70px; /* Reduced height */
     }
     
     /* Title size adjustment */
     .app-title {
+        flex-direction: row; 
         font-size: 1.8em; /* Smaller heading */
     }
     
@@ -1463,29 +1548,56 @@ input {
         padding: 15px;
         max-width: 100%;
     }
-    
-    .app-header {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .app-header-text {
-        align-items: center;
-        text-align: center;
-    }
-    
-    .app-logo {
-        width: 70px;
-        height: 70px;
-    }
-    
-    .app-title {
-        font-size: 1.8em;
-    }
-    
-    .app-motto {
-        font-size: 0.9em;
-    }
+   .app-header {
+    display: flex; /* Flexbox layout for alignment */
+    flex-direction: row; /* Arrange items horizontally */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+    gap: 12px; /* Space between logo and text */
+    margin-bottom: 25px; /* Space below header before input section */
+}
+
+/* Application logo image
+   Includes drop shadow and pulsing animation for visual interest */
+.app-logo {
+    width: 80px; /* Logo width */
+    height: 70px; /* Logo height */
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1)); /* Subtle shadow effect */
+    animation: logoPulse 1.5s ease-in-out infinite; /* Continuous gentle pulsing */
+    flex-shrink: 0; /* Don't shrink on small screens */
+}
+
+/* Container for app title and motto
+   Uses flexbox to stack elements vertically */
+.app-header-text {
+    display: flex; /* Flexbox layout */
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align to left side */
+    justify-content: center; /* Center vertically */
+}
+
+/* Main application title text
+   Large, prominent text in primary color */
+.app-title {
+    color: var(--text-main); /* Text color from theme variable */
+    font-size: 2em; /* Large heading size */
+    font-weight: 700; /* Bold weight for emphasis */
+    letter-spacing: 1px; /* Increased letter spacing for elegance */
+    margin: 0; /* Remove default margins */
+    line-height: 1.2; /* Tight line height */
+}
+
+/* App motto/tagline text
+   Smaller, italicized text below title */
+.app-motto {
+    color: #a8a4a4; /* Gray color */
+    font-size: 0.85em; /* Smaller text size */
+    font-style: italic; /* Italicized for distinction */
+    opacity: 0.85; /* Slightly transparent */
+    margin-top: 4px; /* Space above motto */
+    margin-bottom: 0; /* Remove bottom margin */
+}
+
     
     /* Date/time inputs - stack vertically on very small screens */
     .datetime-input {
@@ -1503,7 +1615,7 @@ input {
     
     /* Full width add button on mobile */
     #addBtn {
-        width: 65%; /* Full width on very small screens */
+        width: 50%; /* Full width on very small screens */
         padding: 8px; /* Reduced padding */
         font-size: 13px; /* Small font */
     }
@@ -1570,7 +1682,7 @@ input {
 
 @media screen and (max-width: 480px) {
     body {
-        padding: 10px; /* Minimal padding on very small screens */
+        padding: 5px; /* Minimal padding on very small screens */
         width: 100%;
         margin: 0; /* Remove default body margin */
     }
@@ -1578,44 +1690,67 @@ input {
     .container {
         margin-top: 15%; /* Center container vertically */
         width: 100%; /* Full width on mobile */
-        padding: 12px; /* Minimal padding */
+        padding: 10px; /* Minimal padding */
     }
     
-    /* Header adjustments for mobile */
-    .app-header {
-        flex-direction: column; /* Stack vertically */
-        gap: 8px; /* Reduced gap */
-        margin-bottom: 15px; /* Reduced margin */
-    }
-    
-    .app-header-text {
-        align-items: center;
-        text-align: center;
-    }
-    
-    /* Logo size adjustment for small phones */
-    .app-logo {
-        width: 60px; /* Reduced width */
-        height: 60px; /* Reduced height */
-    }
-    
-    /* Title size adjustment for small phones */
-    .app-title {
-        font-size: 1.5em; /* Much smaller heading */
-    }
-    
-    /* Motto size adjustment */
-    .app-motto {
-        font-size: 0.85em; /* Smaller text */
-    }
+   .app-header {
+    display: flex; /* Flexbox layout for alignment */
+    flex-direction: row; /* Arrange items horizontally */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+    gap: 12px; /* Space between logo and text */
+    margin-bottom: 25px; /* Space below header before input section */
+}
+
+/* Application logo image
+   Includes drop shadow and pulsing animation for visual interest */
+.app-logo {
+    width: 60px; /* Logo width */
+    height: 50px; /* Logo height */
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1)); /* Subtle shadow effect */
+    animation: logoPulse 1.5s ease-in-out infinite; /* Continuous gentle pulsing */
+    flex-shrink: 0; /* Don't shrink on small screens */
+}
+
+/* Container for app title and motto
+   Uses flexbox to stack elements vertically */
+.app-header-text {
+    display: flex; /* Flexbox layout */
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align to left side */
+    justify-content: center; /* Center vertically */
+}
+
+/* Main application title text
+   Large, prominent text in primary color */
+.app-title {
+    color: var(--text-main); /* Text color from theme variable */
+    font-size: 25px; /* Large heading size */
+    font-weight: 700; /* Bold weight for emphasis */
+    letter-spacing: 1px; /* Increased letter spacing for elegance */
+    margin: 0; /* Remove default margins */
+    line-height: 1.2; /* Tight line height */
+}
+
+/* App motto/tagline text
+   Smaller, italicized text below title */
+.app-motto {
+    color: #a8a4a4; /* Gray color */
+    font-size: 10px; /* Smaller text size */
+    font-style: italic; /* Italicized for distinction */
+    opacity: 0.85; /* Slightly transparent */
+    margin-top: 4px; /* Space above motto */
+    margin-bottom: 0; /* Remove bottom margin */
+}
+
     
     /* Theme toggle button size adjustment */
     .theme-toggle {
         width: 36px; /* Smaller button */
         height: 36px; /* Smaller button */
         font-size: 16px; /* Smaller icon */
-        top: 12px; /* Closer to top */
-        right: 12px; /* Closer to right */
+        top: 9px; /* Closer to top */
+        right: 9px; /* Closer to right */
     }
     
     /* Input field adjustments */
@@ -1630,22 +1765,35 @@ input {
         flex-direction: row; /* Keep horizontal layout */
         gap: 6px; /* Minimal gap between inputs */
     }
-    
+
     /* Date and time inputs - compact sizing on mobile */
     .datetime-input {
         flex: 1; /* Equal width distribution */
         padding: 8px 8px; /* Very small padding */
         font-size: 11px; /* Tiny font */
-        width: 20px; /* Allow shrinking below min-width */
+        width: 5px; /* Allow shrinking below min-width */
     }
+
     
     /* Add button - compact on mobile */
     #addBtn {
         width: 20px;
-        flex: 0 0 auto; /* Don't shrink below content */
+        flex: 1; /* Don't shrink below content */
         padding: 8px 10px; /* Minimal padding */
         font-size: 12px; /* Small font */
         white-space: nowrap; /* Keep text on one line */
+    }
+    .float-label {
+        text-align: center;
+        position: absolute;
+        left: 9px;
+        top: 8px;
+        pointer-events: none;
+        color: #9b9b9b;
+        font-size: 12px;
+        background: transparent;
+        padding: 0;
+        transition: opacity 0.18s ease, transform 0.18s ease;
     }
     
     /* Filter buttons adjustments for mobile */
