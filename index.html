@@ -76,21 +76,19 @@
             <!-- Row container for date, time inputs and add button -->
             <!-- Uses flexbox for horizontal layout -->
             <div class="datetime-add-row">
-                <!-- Date picker input field for setting todo due date -->
-                <!-- min attribute prevents selecting dates in the past -->
-                <!-- datetime-input class for consistent styling -->
-                <!-- placeholder shows "Date" to help users identify the field -->
-                <input type="date" id="todoDate" class="datetime-input" placeholder="Date" min="">
-                
-                <!-- Time picker input field for setting reminder time -->
-                <!-- Works with date field to schedule reminders -->
-                <!-- datetime-input class for matching styling with date input -->
-                <!-- placeholder shows "Time" to help users identify the field -->
-                <input type="time" id="todoTime" class="datetime-input" placeholder="Time">
-                
+                <!-- Date picker input with floating label wrapper -->
+                <div class="input-wrap">
+                    <input type="date" id="todoDate" class="datetime-input" min="">
+                    <label class="float-label">Date</label>
+                </div>
+
+                <!-- Time picker input with floating label wrapper -->
+                <div class="input-wrap">
+                    <input type="time" id="todoTime" class="datetime-input">
+                    <label class="float-label">Time</label>
+                </div>
+
                 <!-- Primary action button to add new todo to the list -->
-                <!-- Triggers addTodo() function when clicked -->
-                <!-- Styled with primary color and bold text for visibility -->
                 <button id="addBtn">Add</button>
             </div>
         </div>
