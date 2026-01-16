@@ -1,881 +1,1610 @@
-/* ===================================
-   UNIVERSAL RESET & BOX MODEL
-   =================================== */
-/* Remove default browser margins and paddings from all elements
-   border-box ensures padding and borders are included in width/height calculations */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+/* ========================================================================
+   MAIN STYLESHEET FOR TODO APPLICATION
+   
+   This stylesheet provides complete styling for a modern todo application
+   with a glassmorphism design, dark theme, animations, and responsive layout.
+   
+   Key Features:
+   - Dark theme with light theme toggle support
+   - Glassmorphism effect on main container
+   - Smooth animations and transitions
+   - Fully responsive design for all screen sizes
+   - Modal dialogs for history viewing
+   - Color-coded action buttons
+   - Notification and reminder system styling
+   ======================================================================== */
 
-        /* ===================================
-           BODY & BACKGROUND STYLING
-           =================================== */
-        
-        /* Main body styling with animated background gradient overlay
-           - Uses Segoe UI font for clean, modern appearance
-           - Gradient layer (50% dark purple/black) positioned over background image
-           - background-attachment: fixed keeps background stationary while scrolling
-           - Flexbox centers the container both horizontally and vertically
-           - min-height: 100vh ensures background covers full viewport height
-           - animation adds subtle continuous background movement */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Layer gradient over background image for better contrast */
-            background: linear-gradient(135deg, rgba(50, 15, 55, 0.696) 0%, rgba(18, 0, 16, 0.9) 100%),
-                        url('https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=2072') center/cover no-repeat;
-            background-attachment: fixed;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            position: relative;
-            animation: backgroundMove 40s ease-in-out infinite;
-        }
+/* ========================================================================
+   SECTION 1: UNIVERSAL RESET & BOX MODEL
+   ======================================================================== */
 
-        /* Keyframes for subtle background movement animation
-           Creates a panning effect that zooms in and moves the background image
-           This provides a dynamic, constantly evolving visual effect
-           - 0% & 100%: Background at normal position and size
-           - 25% & 75%: Background zooms to 110% and shifts position
-           - 50%: Background returns to center at normal size */
-        @keyframes backgroundMove {
-            0% { 
-                background-position: 0% 0%;
-                background-size: 100% 100%;
-            }
-            25% { 
-                background-position: 100% 0%;
-                background-size: 110% 110%;
-            }
-            50% { 
-                background-position: 100% 100%;
-                background-size: 100% 100%;
-            }
-            75% { 
-                background-position: 0% 100%;
-                background-size: 110% 110%;
-            }
-            100% { 
-                background-position: 0% 0%;
-                background-size: 100% 100%;
-            }
-        }
+/* Reset all default margins and padding, use border-box for sizing */
+* {
+    margin: 0; /* Remove all default margins from all elements */
+    padding: 0; /* Remove all default padding from all elements */
+    box-sizing: border-box; /* Include padding and border in width/height calculations for easier sizing */
+}
 
-        /* Animated shimmer effect overlay on background (pseudo-element)
-           Creates a subtle light streak that moves across the screen
-           - position: fixed ensures it stays in place relative to viewport
-           - width/height: 100% covers entire screen
-           - animation creates a continuous diagonal shimmer effect
-           - pointer-events: none allows clicks to pass through to elements below */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* Diagonal gradient that moves across the screen */
-            background: linear-gradient(45deg, 
-                transparent 0%, 
-                rgba(0, 0, 0, 0.556) 25%, 
-                transparent 50%, 
-                rgb(38, 1, 47) 75%, 
-                transparent 100%);
-            background-size: 200% 200%;
-            animation: shimmer 15s ease-in-out infinite;
-            pointer-events: none; /* Allow clicks to pass through */
-            z-index: 0;
-        }
 
-        /* Keyframes for shimmer animation - moves gradient diagonally
-           Creates the illusion of a light streak moving across the background
-           - 0% & 100%: Gradient starts at top-left corner
-           - 50%: Gradient positioned at bottom-right corner
-           - background-size must be larger than container for movement to be visible */
-        @keyframes shimmer {
-            0% { background-position: 0% 0%; }
-            50% { background-position: 100% 100%; }
-            100% { background-position: 0% 0%; }
-        }
+/* ========================================================================
+   SECTION 2: THEME VARIABLES & COLOR SCHEME
+   ======================================================================== */
 
-        /* ===================================
-           MAIN CONTAINER
-           =================================== */
-        
-        /* Central white card container with glassmorphism effect
-           - background: rgba creates semi-transparent white base
-           - backdrop-filter: blur creates frosted glass appearance by blurring background
-           - border-radius: 20px creates smooth, rounded corners
-           - Multiple box-shadows create depth and elevation effect
-           - max-width: 550px ensures container doesn't get too wide on large screens
-           - position: relative & z-index: 1 ensures container sits above background effects */
-        .container {
-            background: rgba(255, 255, 255, 0.15); /* More transparent for glassy effect */
-            backdrop-filter: blur(20px) saturate(180%); /* Stronger blur and saturation */
-            -webkit-backdrop-filter: blur(20px) saturate(180%); /* Safari support */
-            border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border for glass edge */
-            border-radius: 20px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37),
-                        0 30px 60px rgba(0, 0, 0, 0.3),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.4); /* Multiple shadows for depth */
-            width: 100%;
-            max-width: 550px;
-            padding: 30px;
-            position: relative;
-            z-index: 1; /* Ensure container appears above shimmer effect */
-        }
+/* Root color scheme - dark theme defaults */
+:root {
+    --primary: #667eea; /* Primary accent color used for buttons, highlights, and interactive elements */
+    --card-bg: rgba(255, 255, 255, 0.15); /* Card background - semi-transparent white for glassmorphism effect */
+    --text-main: #ffffff; /* Main text color - white text for dark theme */
+    --card-solid: #ffffff; /* Card solid background color for todo items */
+}
 
-        /* Duplicate body::before pseudo-element (should be removed - this is leftover code)
-           Kept from original but now superseded by first body::before definition above */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* Diagonal gradient that moves across the screen */
-            background: linear-gradient(45deg, 
-                transparent 0%, 
-                rgba(255, 255, 255, 0.05) 25%, 
-                transparent 50%, 
-                rgba(255, 255, 255, 0.05) 75%, 
-                transparent 100%);
-            background-size: 200% 200%;
-            animation: shimmer 15s ease-in-out infinite;
-            pointer-events: none; /* Allow clicks to pass through */
-            z-index: 0;
-        }
+/* Light theme color scheme - overrides root variables when light class is applied to body */
+body.light {
+    --card-bg: rgba(255, 255, 255, 0.9); /* Light card background with high opacity */
+    --text-main: #333; /* Dark text color for light theme readability */
+    --card-solid: #f9f9f9; /* Light gray background for todo items in light mode */
+}
 
-        /* Duplicate keyframes definition and container (leftover code to be removed)
-           Original @keyframes shimmer and .container already defined above */
-        @keyframes shimmer {
-            0% { background-position: 0% 0%; }
-            50% { background-position: 100% 100%; }
-            100% { background-position: 0% 0%; }
-        }
 
-        /* ===================================
-           MAIN CONTAINER (DUPLICATE - Remove)
-           =================================== */
-        
-        /* Duplicate container styling - use the one defined above */
-        .container {
-            background: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
-            backdrop-filter: blur(10px); /* Blur background behind container */
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 550px;
-            padding: 30px;
-            position: relative;
-            z-index: 1; /* Ensure container appears above shimmer effect */
-        }
+/* ========================================================================
+   SECTION 3: BODY & BACKGROUND STYLING
+   ======================================================================== */
 
-        /* ===================================
-           HEADER
-           =================================== */
-        
-        /* Main title styling
-           - color: #333 provides dark gray for good contrast against white background
-           - text-align: center ensures title is centered horizontally
-           - margin-bottom: 30px creates space between title and input section
-           - font-size: 2em makes the title prominent and easy to read */
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2em;
-        }
+/* Main body element with animated gradient background and flexbox layout */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Clean, modern font stack that works across all platforms */
+    background: linear-gradient(135deg, rgba(50, 15, 55, 0.696) 0%, rgba(18, 0, 16, 0.9) 100%),
+url('https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=2072') center/cover no-repeat; /* Dark purple gradient overlay on background image */
+    background-attachment: fixed; /* Background stays fixed while scrolling for parallax effect */
+    min-height: 100vh; /* Full viewport height ensuring page fills screen */
+    display: flex; /* Flexbox for centering container */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    padding: 20px; /* Add breathing room around edges on smaller screens */
+    position: relative; /* Enable z-index stacking for layered effects */
+    animation: backgroundMove 40s ease-in-out infinite; /* Apply slow background animation */
+}
 
-        /* ===================================
-           INPUT SECTION
-           =================================== */
-        
-        /* Container for input field and add button
-           - margin-bottom: 30px creates spacing below this section
-           - padding-bottom: 25px adds internal spacing before the border
-           - border-bottom creates a visual separator between input and filter buttons */
-        .input-container {
-            margin-bottom: 30px;
-            padding-bottom: 25px;
-            border-bottom: 2px solid #e0e0e0; /* Separator line below input */
-        }
+/* Keyframe animation for subtle background movement effect
+   Creates a pulsing, breathing motion by shifting background position and scale */
+@keyframes backgroundMove {
+    0% { 
+        background-position: 0% 0%; /* Starting position - top left corner */
+        background-size: 100% 100%; /* Starting size - normal size */
+    }
+    25% { 
+        background-position: 100% 0%; /* Move to right side */
+        background-size: 110% 110%; /* Enlarge slightly for zoom effect */
+    }
+    50% { 
+        background-position: 100% 100%; /* Move to bottom right corner */
+        background-size: 100% 100%; /* Return to normal size */
+    }
+    75% { 
+        background-position: 0% 100%; /* Move to bottom left corner */
+        background-size: 110% 110%; /* Enlarge for zoom effect */
+    }
+    100% { 
+        background-position: 0% 0%; /* Return to starting position */
+        background-size: 100% 100%; /* Return to normal size - completes animation loop */
+    }
+}
 
-        /* Text input field for new tasks
-           - width: 100% makes it span full container width
-           - padding: 12px 15px provides comfortable internal spacing
-           - border: 2px solid #e0e0e0 creates visible border
-           - border-radius: 8px creates slightly rounded corners
-           - transition: border-color 0.3s smoothly animates border color changes
-           - margin-bottom: 10px creates space between task input and datetime inputs */
-        #todoInput {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-            margin-bottom: 10px;
-        }
+/* ========================================================================
+   SECTION 4: PSEUDO-ELEMENT SHIMMER OVERLAY
+   
+   Creates an animated shimmer effect that plays over the background,
+   enhancing the glassmorphism aesthetic with a moving light gradient
+   ======================================================================== */
 
-        /* Highlight input border when focused
-           - outline: none removes default blue outline
-           - border-color: #667eea changes border to purple/blue indicating focus */
-        #todoInput:focus {
-            outline: none;
-            border-color: #667eea;
-        }
+/* Shimmer effect overlay pseudo-element on body
+   Creates a diagonal light that moves across the screen continuously */
+body::before {
+    content: ''; /* Create the pseudo-element */
+    position: fixed; /* Fixed positioning to cover entire viewport */
+    top: 0; /* Start at top edge */
+    left: 0; /* Start at left edge */
+    width: 100%; /* Cover full viewport width */
+    height: 100%; /* Cover full viewport height */
+    background: linear-gradient(45deg,  
+        transparent 0%, /* Transparent at start */
+        rgba(0, 0, 0, 0.556) 25%, /* Dark semi-transparent middle */
+        transparent 50%, /* Transparent middle */
+        rgb(38, 1, 47) 75%, /* Dark purple at 75% */
+        transparent 100%); /* Transparent at end */
+    background-size: 200% 200%; /* Larger than container for animation space */
+    animation: shimmer 15s ease-in-out infinite; /* Apply continuous shimmer animation */
+    pointer-events: none; /* Prevent blocking clicks on elements below */
+    z-index: 0; /* Layer behind all content */
+}
 
-        /* Container for date/time inputs and add button
-           - display: flex enables flexible layout for child elements
-           - gap: 10px creates consistent spacing between date, time, and add button
-           - align-items: center vertically centers items with different heights */
-        .datetime-add-row {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
+/* Shimmer animation keyframes
+   Creates a smooth diagonal movement across the screen */
+@keyframes shimmer {
+    0% { 
+        background-position: 0% 0%; /* Start position - top left */
+    }
+    50% { 
+        background-position: 100% 100%; /* Middle position - bottom right */
+    }
+    100% { 
+        background-position: 0% 0%; /* End position - back to top left, completes loop */
+    }
+}
 
-        /* Date and time input styling
-           - flex: 1 makes each input grow equally to fill available space
-           - padding: 10px 12px provides reasonable internal spacing
-           - border: 2px solid #e0e0e0 matches the main input field style
-           - border-radius: 8px maintains consistent rounded corners
-           - transition: border-color 0.3s smoothly animates focus state */
-        .datetime-input {
-            flex: 1;
-            padding: 10px 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
+/* Logo pulse animation
+   Creates a gentle breathing effect that draws attention to the logo */
+@keyframes logoPulse {
+    0% { 
+        transform: scale(1); /* Normal size */
+    }
+    50% { 
+        transform: scale(1.08); /* Enlarge by 8% */
+    }
+    100% { 
+        transform: scale(1); /* Return to normal size, completes loop */
+    }
+}
 
-        /* Focus state for date/time inputs
-           - Same styling as #todoInput:focus for consistency */
-        .datetime-input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
 
-        /* Add button styling
-           - padding: 10px 25px provides comfortable button size
-           - background: #667eea uses brand blue/purple color
-           - color: white ensures good contrast
-           - border: none removes default button border
-           - border-radius: 8px maintains rounded corner style
-           - cursor: pointer changes mouse cursor to indicate clickability
-           - transition: background 0.3s smoothly animates hover effect
-           - font-weight: 600 makes text bold for prominence
-           - white-space: nowrap prevents button text from wrapping to next line */
-        #addBtn {
-            padding: 10px 25px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-weight: 600;
-            white-space: nowrap;
-        }
+/* ========================================================================
+   SECTION 5: MAIN CONTAINER
+   
+   The main card-like container that holds all the todo app content.
+   Uses glassmorphism effect with backdrop blur for modern aesthetic.
+   ======================================================================== */
 
-        /* Darken add button on hover to provide visual feedback
-           - Slightly darker shade (#5568d3) indicates the button is interactive */
-        #addBtn:hover {
-            background: #5568d3;
-        }
+/* Main card container with glassmorphism effect
+   This is the primary container that holds all application content */
+.container {
+    background: var(--card-bg); /* Card background using CSS variable for theme switching */
+    backdrop-filter: blur(20px) saturate(180%); /* Glassmorphism blur effect on background */
+    -webkit-backdrop-filter: blur(20px) saturate(180%); /* Safari support for backdrop filter */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border for glass effect appearance */
+    border-radius: 20px; /* Rounded corners for modern look */
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35); /* Multiple shadows create depth */
+    width: 100%; /* Full width on small screens */
+    max-width: 550px; /* Maximum width on large screens for readability */
+    padding: 20px; /* Reduced internal spacing for more compact layout */
+    position: relative; /* Enable z-index stacking */
+    z-index: 1; /* Layer above background effects */
+}
 
-        /* ===================================
-           FILTER BUTTONS
-           =================================== */
-        
-        /* Container for All/Active/Completed filter buttons
-           - display: flex enables horizontal alignment of buttons
-           - gap: 10px creates consistent spacing between buttons
-           - margin-bottom: 20px provides space before the task list
-           - justify-content: center aligns buttons to the center
-           - align-items: center vertically centers the buttons */
-        .filters {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            justify-content: center;
-            align-items: center;
-        }
 
-        /* Individual filter button styling
-           - padding: 8px 16px provides button dimensions
-           - background: #f5f5f5 uses light gray default appearance
-           - border: 2px solid transparent allows space for active state border
-           - border-radius: 6px creates slightly rounded corners
-           - cursor: pointer indicates clickability
-           - transition: all 0.3s smoothly animates all property changes
-           - font-size: 14px matches smaller text for filter section
-           - position: relative required for absolute positioning of counter badge */
-        .filter-btn {
-            padding: 8px 16px;
-            background: #f5f5f5;
-            border: 2px solid transparent;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 14px;
-            position: relative; /* For absolute positioning of counter badge */
-        }
+/* ========================================================================
+   SECTION 6: THEME TOGGLE BUTTON
+   
+   Allows users to switch between dark and light theme modes.
+   Positioned in the top-right corner of the container.
+   ======================================================================== */
 
-        /* Counter badge that appears on top-right of each filter button
-           - position: absolute with top: -8px, right: -8px places it outside corner
-           - background: #ff0000ca uses red with transparency for visibility
-           - border-radius: 50% creates a perfect circle shape
-           - width/height: 22px ensures square dimensions that become circular
-           - display: flex, align-items/justify-content: center centers the number inside
-           - font-size: 11px keeps the counter text small
-           - font-weight: bold makes the number stand out
-           - box-shadow: 0 2px 4px creates depth and shadow */
-        .filter-btn .counter {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #ff0000ca;
-            color: white;
-            border-radius: 50%; /* Make it circular */
-            width: 22px;
-            height: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: bold;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
+/* Theme toggle button - positioned in top right corner
+   Circular button that switches between dark and light themes */
+.theme-toggle {
+    position: absolute; /* Positioned absolutely within container */
+    top: 18px; /* Distance from top of container */
+    right: 18px; /* Distance from right of container */
+    width: 42px; /* Fixed width for circular appearance */
+    height: 42px; /* Fixed height to match width */
+    border-radius: 50%; /* Perfect circle shape */
+    border: none; /* No border around button */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 18px; /* Size of icon inside button */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+}
 
-        /* Invert counter colors when filter button is active
-           - white background with purple text indicates active state
-           - This creates visual distinction from inactive counter badges */
-        .filter-btn.active .counter {
-            background: white;
-            color: #667eea;
-        }
 
-        /* Active filter button styling
-           - background: #667eea changes to purple/blue
-           - color: white ensures text is visible on purple background
-           - border-color: #667eea adds matching colored border
-           - Together these indicate which filter is currently selected */
-        .filter-btn.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
+/* ========================================================================
+   SECTION 7: HEADER SECTION
+   
+   Contains the app logo, title, and motto. Uses flexbox for layout.
+   Logo includes a subtle pulsing animation.
+   ======================================================================== */
 
-        /* Highlight filter button border on hover
-           - border-color: #667eea provides visual feedback on hover
-           - Users can see which button they're about to click */
-        .filter-btn:hover {
-            border-color: #667eea;
-        }
+/* App header container with logo and title
+   Flexbox layout for organizing logo and text side-by-side */
+.app-header {
+    display: flex; /* Flexbox layout for alignment */
+    flex-direction: row; /* Arrange items horizontally */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+    gap: 15px; /* Space between logo and text */
+    margin-bottom: 30px; /* Space below header before input section */
+}
 
-        /* ===================================
-           TODO LIST
-           =================================== */
-        
-        /* Main unordered list container for tasks
-           - list-style: none removes the default bullet points
-           - Tasks will use custom styling instead */
-        #todoList {
-            list-style: none;
-        }
+/* Application logo image
+   Includes drop shadow and pulsing animation for visual interest */
+.app-logo {
+    width: 100px; /* Logo width */
+    height: 85px; /* Logo height */
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1)); /* Subtle shadow effect */
+    animation: logoPulse 1.5s ease-in-out infinite; /* Continuous gentle pulsing */
+}
 
-        /* Individual task item styling
-           - display: flex with flex-direction: column stacks content vertically
-           - padding: 15px provides internal spacing around task content
-           - background: #f9f9f9 uses light gray background for task items
-           - border-radius: 8px creates rounded corners
-           - margin-bottom: 10px creates spacing between tasks
-           - transition: all 0.3s smoothly animates hover effects
-           - animation: slideIn 0.3s ease plays when tasks are added (entrance effect) */
-        .todo-item {
-            display: flex;
-            flex-direction: column;
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            transition: all 0.3s;
-            animation: slideIn 0.3s ease; /* Animate when added */
-        }
+/* Container for app title and motto
+   Uses flexbox to stack elements vertically */
+.app-header-text {
+    display: flex; /* Flexbox layout */
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align to left side */
+}
 
-        /* Slide-in animation for new tasks
-           - from: opacity 0 and translateY -10px means task starts invisible and above
-           - to: opacity 1 and translateY 0 means task fades in and moves down
-           - Creates smooth, professional entrance effect for new tasks */
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+/* Main application title text
+   Large, prominent text in primary color */
+.app-title {
+    color: var(--text-main); /* Text color from theme variable */
+    font-size: 2.1em; /* Large heading size */
+    font-weight: 700; /* Bold weight for emphasis */
+    letter-spacing: 1px; /* Increased letter spacing for elegance */
+}
 
-        /* Slight movement and background change on hover
-           - background: #f0f0f0 darkens the background slightly
-           - transform: translateX(5px) shifts task right by 5 pixels
-           - Provides interactive feedback when user hovers over task */
-        .todo-item:hover {
-            background: #f0f0f0;
-            transform: translateX(5px);
-        }
+/* App motto/tagline text
+   Smaller, italicized text below title */
+.app-motto {
+    color: #a8a4a4; /* Gray color */
+    font-size: 1em; /* Normal text size */
+    font-style: italic; /* Italicized for distinction */
+    opacity: 0.85; /* Slightly transparent */
+    margin-top: 5px; /* Space above motto */
+}
 
-        /* Completed task styling - green background instead of strikethrough
-           - background: #e8f5e9 uses light green background
-           - border-left: 4px solid #4caf50 adds green accent bar on left side
-           - Visually distinguishes completed tasks from active ones */
-        .todo-item.completed {
-            background: #e8f5e9;
-            border-left: 4px solid #4caf50;
-        }
+/* ========================================================================
+   SECTION 8: INPUT SECTION & FORM ELEMENTS
+   
+   Styling for todo input fields, date/time inputs, and add button.
+   Includes focus states and transitions for interactivity.
+   ======================================================================== */
 
-        /* Main row with checkbox, text, and action buttons
-           - display: flex enables horizontal layout
-           - align-items: center vertically centers all elements
-           - gap: 10px creates consistent spacing between checkbox, text, and buttons */
-        .todo-main-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+/* Generic input field styling
+   Applied to all input elements for consistency */
+input {
+    width: 100%; /* Full width of container */
+    padding: 12px; /* Internal padding for comfort */
+    border-radius: 8px; /* Rounded corners */
+    border: 2px solid #ddd; /* Light gray border */
+    font-size: 15px; /* Readable text size */
+}
 
-        /* Checkbox for marking tasks complete
-           - width/height: 20px sets checkbox dimensions
-           - cursor: pointer indicates it's clickable
-           - flex-shrink: 0 prevents checkbox from shrinking */
-        .todo-checkbox {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
+/* Input container wrapper
+   Creates visual separation between input section and todo list */
+.input-container {
+    margin-bottom: 15px; /* Reduced space below input section */
+    padding-bottom: 15px; /* Reduced internal padding */
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3); /* Separator line */
+}
 
-        /* Task text and datetime container
-           - flex: 1 makes this element grow to fill available space
-           - min-width: 0 allows flex child to shrink below content size (important for text wrapping) */
-        .todo-content {
-            flex: 1;
-            min-width: 0;
-        }
+/* Main todo input field
+   Text field where users type their todo item */
+#todoInput {
+    width: 100%; /* Full container width */
+    padding: 12px 15px; /* Comfortable padding */
+    border: 2px solid #e0e0e0; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 16px; /* Clear, readable text */
+    transition: border-color 0.3s; /* Smooth focus transition */
+    margin-bottom: 10px; /* Space below input */
+}
 
-        /* Task text styling
-           - font-size: 16px makes task text readable
-           - color: #333 uses dark gray for good contrast
-           - word-wrap: break-word ensures long text wraps to next line
-           - margin-bottom: 4px adds space between task text and datetime */
-        .todo-text {
-            font-size: 16px;
-            color: #333;
-            word-wrap: break-word;
-            margin-bottom: 4px;
-        }
+/* Todo input focused state
+   Changes border color when field has focus */
+#todoInput:focus {
+    outline: none; /* Remove default outline */
+    border-color: #667eea; /* Change to primary color */
+}
 
-        /* Completed task text - darker green, no strikethrough
-           - color: #2e7d32 uses dark green indicating completed status
-           - font-weight: 500 makes text slightly bold for emphasis */
-        .todo-item.completed .todo-text {
-            color: #2e7d32;
-            font-weight: 500;
-        }
+/* Date/time input row container
+   Arranges date, time inputs and add button horizontally */
+.datetime-add-row {
+    display: flex; /* Horizontal layout */
+    gap: 10px; /* Space between inputs */
+    align-items: center; /* Vertical alignment */
+}
 
-        /* Date and time display styling
-           - font-size: 12px makes datetime smaller than task text
-           - color: #666 uses medium gray for secondary information
-           - display: flex with gap: 8px allows multiple datetime items to sit horizontally
-           - margin-top: 4px separates from task text above */
-        .todo-datetime {
-            font-size: 12px;
-            color: #666;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 4px;
-        }
+/* Date and time input fields
+   Styling for the date and time picker inputs */
+.datetime-input {
+    flex: 1; /* Equal width distribution */
+    padding: 8px 10px; /* Reduced padding for smaller appearance */
+    border: 2px solid #e0e0e0; /* Light border */
+    border-radius: 6px; /* Rounded corners */
+    font-size: 13px; /* Smaller font size for compact layout */
+    transition: border-color 0.3s; /* Smooth focus transition */
+    min-width: 100px; /* Minimum width to prevent squishing */
+}
 
-        /* Individual datetime item container
-           - display: flex enables horizontal alignment
-           - align-items: center vertically centers icon with text
-           - gap: 4px creates small space between icon and text */
-        .todo-datetime-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
+/* Date/time input focused state */
+.datetime-input:focus {
+    outline: none; /* Remove default outline */
+    border-color: #667eea; /* Change to primary color */
+}
 
-        /* Action buttons container (Edit, Delete, Bell)
-           - display: flex enables horizontal layout of buttons
-           - gap: 5px creates small spacing between buttons
-           - flex-shrink: 0 prevents buttons from shrinking on small screens */
-        .todo-actions {
-            display: flex;
-            gap: 5px;
-            flex-shrink: 0;
-        }
+/* Add button styling
+   Primary button for creating new todos */
+#addBtn {
+    padding: 8px 18px; /* Reduced button padding */
+    background: var(--primary); /* Primary color from theme */
+    color: #fff; /* White text */
+    border: none; /* No border */
+    border-radius: 6px; /* Rounded corners */
+    font-size: 14px; /* Smaller text size */
+    cursor: pointer; /* Pointer cursor */
+    transition: background 0.3s; /* Smooth color transition */
+    white-space: nowrap; /* Prevent text wrapping */
+    min-width: fit-content; /* Don't shrink below content size */
+    font-weight: 600; /* Bold for emphasis */
+    white-space: nowrap; /* Prevent text wrapping */
+}
 
-        /* ===================================
-           ACTION BUTTONS (Edit, Delete, Bell)
-           =================================== */
-        
-        /* Bell/reminder button for task notifications
-           - background: #9b59b6 uses purple color for reminder/notification context
-           - color: white ensures visible text on purple background
-           - border: none removes default button border
-           - padding: 6px 10px keeps button compact
-           - border-radius: 6px creates slightly rounded appearance
-           - cursor: pointer indicates clickability
-           - transition: background 0.3s smoothly animates hover effect
-           - width/height: 32px creates square button shape
-           - display: flex with align/justify-center centers the bell icon inside */
-        .bell-btn {
-            background: #9b59b6;
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-size: 16px;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+/* Add button hover state
+   Darker shade when hovering over button */
+#addBtn:hover {
+    background: #5568d3; /* Darker purple */
+}
 
-        /* Bell button hover state - slightly darker purple */
-        .bell-btn:hover {
-            background: #8e44ad;
-        }
+/* Generic input field styling - removes defaults
+   Applied to all input elements for consistency throughout app */
+input {
+    width: 100%; /* Full width of parent container */
+    padding: 12px; /* Internal padding for comfortable text entry */
+    border-radius: 8px; /* Rounded corners for modern look */
+    border: 2px solid #ddd; /* Light gray border */
+    font-size: 15px; /* Readable text size */
+}
 
-        /* Bell button active state - green background indicates notification is active
-           - background: #27ae60 uses green to clearly show reminders are enabled */
-        .bell-btn.active {
-            background: #27ae60;
-        }
+/* Input container wrapper
+   Separates input section from the todo list below */
+.input-container {
+    margin-bottom: 25px; /* Space below input section */
+    padding-bottom: 20px; /* Internal padding for separation */
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3); /* Subtle separator line */
+}
 
-        /* Edit button styling
-           - background: #ffa502 uses orange to indicate editing/modification action
-           - color: white ensures good contrast on orange background
-           - border: none removes default button styling
-           - padding: 6px 10px provides appropriate button size
-           - border-radius: 6px maintains consistent rounded corners
-           - cursor: pointer indicates clickability
-           - transition: background 0.3s smoothly animates hover effect
-           - font-size: 14px keeps button text reasonable size
-           - height: 32px ensures consistent height with other action buttons */
-        .edit-btn {
-            background: #ffa502;
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-size: 14px;
-            height: 32px;
-        }
+/* Main todo input field for text entry
+   Text field where users type their todo item description */
+#todoInput {
+    width: 100%; /* Full container width */
+    padding: 12px 15px; /* Comfortable padding for typing */
+    border: 2px solid #e0e0e0; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 16px; /* Clear, readable text */
+    transition: border-color 0.3s; /* Smooth focus color change */
+    margin-bottom: 10px; /* Space below input field */
+}
 
-        /* Darken edit button on hover to provide visual feedback
-           - Slightly darker shade (#ff7f00) indicates button is interactive */
-        .edit-btn:hover {
-            background: #ff7f00;
-        }
+/* Todo input focused state
+   Shows visual feedback when field is active */
+#todoInput:focus {
+    outline: none; /* Remove browser default outline */
+    border-color: #667eea; /* Change to primary color on focus */
+}
 
-        /* Delete button - shows "×" symbol
-           - background: #ff4757 uses red color for destructive action
-           - color: white ensures symbol is visible
-           - border: none removes default styling
-           - padding: 6px 10px provides space around symbol
-           - border-radius: 6px creates rounded corners
-           - cursor: pointer indicates clickability
-           - transition: background 0.3s smoothly animates hover effect
-           - font-size: 16px makes the × symbol larger and more visible
-           - font-weight: bold makes symbol more prominent
-           - line-height: 1 prevents extra vertical spacing around symbol
-           - width/height: 32px creates square button (circular with border-radius)
-           - display: flex with align/justify-center centers the × symbol */
-        .delete-btn {
-            background: #ff4757;
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-size: 16px;
-            font-weight: bold;
-            line-height: 1;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+/* Date/time input row container
+   Arranges date, time inputs and add button in horizontal layout */
+.datetime-add-row {
+    display: flex; /* Horizontal flexbox layout */
+    gap: 10px; /* Space between inputs and button */
+    align-items: center; /* Vertical alignment centering */
+}
 
-        /* Darken delete button on hover
-           - Darker red (#e84118) provides visual feedback
-           - Color change emphasizes this is a destructive action */
-        .delete-btn:hover {
-            background: #e84118;
-        }
+/* Date and time input fields
+   Input fields for scheduling/due date functionality */
+.datetime-input {
+    flex: 1; /* Equal width distribution among inputs */
+    padding: 10px 12px; /* Comfortable padding */
+    border: 2px solid #e0e0e0; /* Light border matching todo input */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 14px; /* Smaller than main input */
+    transition: border-color 0.3s; /* Smooth color transition */
+}
 
-        /* ===================================
-           EDIT MODE STYLING
-           =================================== */
-        
-        /* Edit mode container
-           - display: flex with flex-direction: column stacks form elements vertically
-           - gap: 10px creates consistent spacing between input fields and buttons */
-        .edit-mode-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+/* Date/time input focused state
+   Visual feedback when field is active */
+.datetime-input:focus {
+    outline: none; /* Remove browser default outline */
+    border-color: #667eea; /* Change to primary color on focus */
+}
 
-        /* Input field when editing a task
-           - width: 100% makes it span full width of container
-           - padding: 8px 12px provides internal spacing for text
-           - border: 2px solid #667eea uses brand color to indicate edit mode
-           - border-radius: 6px creates rounded corners
-           - font-size: 16px keeps text readable and matches task text size */
-        .edit-input {
-            width: 100%;
-            padding: 8px 12px;
-            border: 2px solid #667eea;
-            border-radius: 6px;
-            font-size: 16px;
-        }
+/* Add button styling
+   Primary action button for creating new todos */
+#addBtn {
+    padding: 10px 22px; /* Button padding */
+    background: var(--primary); /* Primary color from theme variable */
+    color: #fff; /* White text */
+    border: none; /* No border */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 16px; /* Clear text size */
+    cursor: pointer; /* Pointer cursor indicates clickability */
+    transition: background 0.3s; /* Smooth color transition */
+    font-weight: 600; /* Semi-bold for emphasis */
+    white-space: nowrap; /* Prevent text wrapping */
+}
 
-        /* Edit datetime row - contains date and time inputs
-           - display: flex enables horizontal layout
-           - gap: 10px creates spacing between date and time inputs */
-        .edit-datetime-row {
-            display: flex;
-            gap: 10px;
-        }
+/* Add button hover state
+   Darker shade provides visual feedback on hover */
+#addBtn:hover {
+    background: #5568d3; /* Darker purple for contrast */
+}
 
-        /* Edit action buttons row - contains save and cancel buttons
-           - display: flex enables horizontal layout
-           - gap: 8px creates small spacing between buttons
-           - justify-content: flex-end aligns buttons to the right side */
-        .edit-actions-row {
-            display: flex;
-            gap: 8px;
-            justify-content: flex-end;
-        }
+/* ========================================================================
+   SECTION 9: FILTER BUTTONS
+   
+   Filter buttons allow users to view todos by status (All, Active, Completed).
+   Each button displays a counter badge showing the count in that category.
+   ======================================================================== */
 
-        /* Save button in edit mode
-           - background: #2ecc71 uses green color to indicate positive/save action
-           - color: white ensures good contrast on green background
-           - border: none removes default button styling
-           - padding: 8px 12px provides appropriate button dimensions
-           - border-radius: 6px creates rounded corners
-           - cursor: pointer indicates clickability
-           - transition: background 0.3s smoothly animates hover effect
-           - font-size: 14px keeps button text proportional */
-        .save-btn {
-            background: #2ecc71;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-size: 14px;
-        }
+/* Filters container
+   Holds all filter buttons with flexbox layout */
+.filters {
+    display: flex; /* Horizontal layout */
+    gap: 10px; /* Space between buttons */
+    margin-bottom: 20px; /* Space below filters */
+    justify-content: center; /* Center buttons horizontally */
+    align-items: center; /* Vertical alignment */
+    flex-wrap: wrap; /* Wrap to next line on small screens */
+}
 
-        /* Darken save button on hover to provide visual feedback
-           - Darker green (#27ae60) indicates button is interactive */
-        .save-btn:hover {
-            background: #27ae60;
-        }
+/* Individual filter button
+   Clickable buttons for filtering todos */
+.filter-btn {
+    padding: 8px 16px; /* Button padding */
+    background: #f5f5f5; /* Light gray background */
+    border: 2px solid transparent; /* Transparent border by default */
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: all 0.3s; /* Smooth transition on all properties */
+    font-size: 14px; /* Small text size */
+    position: relative; /* Position relative for counter badge */
+}
 
-        /* Cancel button in edit mode
-           - background: #95a5a6 uses neutral gray color for non-destructive cancel action
-           - color: white ensures visible text on gray background
-           - border: none removes default styling
-           - padding: 8px 12px matches save button dimensions
-           - border-radius: 6px maintains consistent rounded corners
-           - cursor: pointer indicates clickability
-           - transition: background 0.3s smoothly animates hover effect
-           - font-size: 14px matches save button text size */
-        .cancel-btn {
-            background: #95a5a6;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-size: 14px;
-        }
+/* Counter badge on filter button
+   Shows number of items in each category */
+.filter-btn .counter {
+    position: absolute; /* Positioned at corner */
+    top: -8px; /* Above top edge */
+    right: -8px; /* To right of button */
+    background: #ff0000ca; /* Red with transparency */
+    color: white; /* White text */
+    border-radius: 50%; /* Perfect circle */
+    width: 22px; /* Fixed width */
+    height: 22px; /* Fixed height */
+    display: flex; /* Center content */
+    align-items: center; /* Vertical center */
+    justify-content: center; /* Horizontal center */
+    font-size: 11px; /* Small text size */
+    font-weight: bold; /* Bold number */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
 
-        /* Darken cancel button on hover
-           - Slightly darker gray (#7f8c8d) provides visual feedback on hover */
-        .cancel-btn:hover {
-            background: #7f8c8d;
-        }
+/* Active filter button counter
+   Different appearance when filter is selected */
+.filter-btn.active .counter {
+    background: white; /* White background */
+    color: #667eea; /* Primary color text */
+}
 
-        /* ===================================
-           EMPTY STATE
-           =================================== */
-        
-        /* Message shown when no tasks match current filter
-           - text-align: center centers the empty state message
-           - padding: 40px 20px provides generous spacing around message
-           - color: #999 uses light gray to indicate secondary/informational text
-           - This style is typically applied to a <div> or <p> element in the #todoList */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #999;
-        }
+/* Active filter button state
+   Visual indication of which filter is currently selected */
+.filter-btn.active {
+    background: #667eea; /* Primary color background */
+    color: white; /* White text */
+    border-color: #667eea; /* Primary color border */
+}
 
-        /* ===================================
-           FOOTER STATS & ACTIONS
-           =================================== */
-        
-        /* Bottom section with stats and bulk action buttons
-           - display: flex with justify-content: space-between creates space between items count and buttons
-           - align-items: center vertically centers all content
-           - margin-top: 20px separates footer from task list above
-           - padding-top: 20px adds space before the top border
-           - border-top: 2px solid #e0e0e0 creates visual separator
-           - font-size: 14px makes stats text slightly smaller
-           - color: #666 uses medium gray for secondary information
-           - gap: 10px creates spacing that helps with wrapping on small screens */
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid #e0e0e0;
-            font-size: 14px;
-            color: #666;
-            gap: 10px;
-        }
+/* Filter button hover state
+   Visual feedback on hover */
+.filter-btn:hover {
+    border-color: #667eea; /* Primary color border appears */
+}
 
-        /* Container for action buttons (Clear Completed, Empty All)
-           - display: flex enables horizontal layout of buttons
-           - gap: 8px creates consistent spacing between buttons
-           - flex-wrap: wrap allows buttons to wrap to next line on very small screens */
-        .button-group {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
+/* ========================================================================
+   SECTION 10: TODO LIST & ITEMS
+   
+   Styling for the main todo list and individual todo items.
+   Includes animations, completed state styling, and item layout.
+   ======================================================================== */
 
-        /* Clear Completed button - removes finished tasks from list
-           - background: #ff6b6b uses light red to indicate task removal
-           - color: white ensures visible text on red background
-           - border: none removes default button styling
-           - padding: 8px 16px provides appropriate button size
-           - border-radius: 6px creates rounded corners
-           - cursor: pointer indicates clickability
-           - font-size: 14px keeps button text readable
-           - transition: background 0.3s smoothly animates hover effect
-           - white-space: nowrap prevents button text from wrapping */
-        .clear-completed {
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s;
-            white-space: nowrap; /* Prevent text wrapping */
-        }
+/* Main todo list
+   Container for all todo items */
+#todoList {
+    list-style: none; /* Remove default list styling */
+}
 
-        /* Darken clear completed button on hover
-           - Slightly darker red (#ee5a52) provides visual feedback */
-        .clear-completed:hover {
-            background: #ee5a52;
-        }
+/* Individual todo item container
+   Wraps all content for a single todo */
+.todo-item {
+    display: flex; /* Flexbox layout */
+    flex-direction: column; /* Stack content vertically */
+    padding: 15px; /* Internal padding */
+    background: var(--card-solid); /* Background from theme variable */
+    border-radius: 8px; /* Rounded corners */
+    margin-bottom: 10px; /* Space between items */
+    transition: all 0.3s; /* Smooth transitions on all properties */
+    animation: slideIn 0.3s ease; /* Slide in animation on load */
+}
 
-        /* Empty All Tasks button - clears entire task list (destructive action)
-           - background: #e74c3c uses darker red to emphasize destructive nature
-           - color: white ensures visible text on red background
-           - border: none removes default styling
-           - padding: 8px 16px matches other action button dimensions
-           - border-radius: 6px maintains consistent rounded corners
-           - cursor: pointer indicates clickability
-           - font-size: 14px keeps proportional text size
-           - transition: background 0.3s smoothly animates hover effect
-           - white-space: nowrap prevents button text from wrapping to multiple lines */
-        .empty-all {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s;
-            white-space: nowrap;
-        }
+/* Slide in animation
+   Todo items slide in from above when created */
+@keyframes slideIn {
+    from { 
+        opacity: 0; /* Start invisible */
+        transform: translateY(-10px); /* Start above final position */
+    }
+    to { 
+        opacity: 1; /* Fully visible */
+        transform: translateY(0); /* Final position */
+    }
+}
 
-        /* Darken empty all button on hover
-           - Much darker red (#c0392b) emphasizes this is a destructive action */
-        .empty-all:hover {
-            background: #c0392b;
-        }
+/* Todo item hover state
+   Visual feedback when hovering over item */
+.todo-item:hover {
+    background: #f0f0f0; /* Slightly darker background */
+    transform: translateX(5px); /* Slight shift right */
+}
 
-        /* Notification permission banner - requests user to enable browser notifications
-           - background: #fff3cd uses light yellow to indicate informational message
-           - border: 1px solid #ffc107 uses warning yellow for border
-           - border-radius: 8px creates rounded corners for softer appearance
-           - padding: 12px 15px provides internal spacing
-           - margin-bottom: 20px separates banner from main content below
-           - display: flex with justify-content: space-between places button on right
-           - align-items: center vertically centers banner content
-           - font-size: 14px keeps text readable but secondary */
-        .notification-banner {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            border-radius: 8px;
-            padding: 12px 15px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-        }
+/* Completed todo item state
+   Different styling for finished todos */
+.todo-item.completed {
+    background: #e8f5e9; /* Light green background */
+    border-left: 4px solid #4caf50; /* Green accent border */
+}
 
-        /* Enable button within notification banner
-           - background: #ffc107 uses warning yellow color to match banner
-           - border: none removes default styling
-           - padding: 6px 12px provides button dimensions
-           - border-radius: 4px creates slightly rounded button corners
-           - cursor: pointer indicates clickability
-           - font-weight: 600 makes button text bold for emphasis */
-        .notification-banner button {
-            background: #ffc107;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-        }
+/* Main row of todo item
+   Contains checkbox, text, and actions */
+.todo-main-row {
+    display: flex; /* Horizontal layout */
+    align-items: center; /* Vertical centering */
+    gap: 10px; /* Space between elements */
+}
 
-        /* Darken notification banner button on hover
-           - Slightly darker yellow (#ffb300) provides visual feedback */
-        .notification-banner button:hover {
-            background: #ffb300;
-        }
+/* Checkbox input
+   For marking todos as complete */
+.todo-checkbox {
+    width: 20px; /* Fixed width */
+    height: 20px; /* Fixed height */
+    cursor: pointer; /* Pointer cursor */
+    flex-shrink: 0; /* Don't shrink with content */
+    cursor: pointer; /* Pointer cursor */
+    flex-shrink: 0; /* Don't shrink with content */
+}
+
+/* Todo item content wrapper
+   Contains the todo text and datetime info */
+.todo-content {
+    flex: 1; /* Take remaining space */
+    min-width: 0; /* Prevent overflow issues */
+}
+
+/* Todo text/title
+   Main text content of the todo item */
+.todo-text {
+    font-size: 16px; /* Readable text size */
+    color: #333; /* Dark text color */
+    word-wrap: break-word; /* Wrap long text */
+    margin-bottom: 4px; /* Space below text */
+}
+
+/* Completed todo text styling
+   Different appearance for finished todos */
+.todo-item.completed .todo-text {
+    color: #2e7d32; /* Dark green color */
+    font-weight: 500; /* Slightly bold */
+}
+
+/* ========================================================================
+   SECTION 11: TODO DATETIME & INFORMATION
+   
+   Styling for date and time display within todo items.
+   Shows when the todo was created or due.
+   ======================================================================== */
+
+/* Date and time display container
+   Shows all datetime information for a todo */
+.todo-datetime {
+    font-size: 12px; /* Small text size */
+    color: #666; /* Medium gray text */
+    display: flex; /* Horizontal layout */
+    align-items: center; /* Vertical centering */
+    gap: 8px; /* Space between datetime items */
+    margin-top: 4px; /* Space above datetime info */
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+}
+
+/* Individual datetime item
+   Wraps each date/time piece (e.g., date, time) */
+.todo-datetime-item {
+    display: flex; /* Horizontal layout */
+    align-items: center; /* Vertical centering */
+    gap: 4px; /* Space between icon and text */
+}
+
+/* ========================================================================
+   SECTION 12: TODO ACTION BUTTONS
+   
+   Styling for action buttons (bell/reminder, edit, delete).
+   Each button has distinct colors and hover states.
+   ======================================================================== */
+
+/* Action buttons container
+   Holds reminder, edit, and delete buttons */
+.todo-actions {
+    display: flex; /* Horizontal layout */
+    gap: 5px; /* Small space between buttons */
+    flex-shrink: 0; /* Don't shrink with content */
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+}
+
+/* Bell/reminder button
+   Sets reminders/notifications for a todo */
+.bell-btn {
+    background: #9b59b6; /* Purple color */
+    color: white; /* White icon */
+    border: none; /* No border */
+    padding: 6px 10px; /* Button padding */
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background 0.3s; /* Smooth transition */
+    font-size: 16px; /* Icon size */
+    width: 32px; /* Fixed width for consistency */
+    height: 32px; /* Fixed height for consistency */
+    display: flex; /* Center content */
+    align-items: center; /* Vertical center */
+    justify-content: center; /* Horizontal center */
+}
+
+/* Bell button hover state
+   Darker purple on hover */
+.bell-btn:hover {
+    background: #8e44ad; /* Darker purple */
+}
+
+/* Active bell button state
+   Green color when notification is enabled */
+.bell-btn.active {
+    background: #27ae60; /* Green color */
+}
+
+/* Edit button
+   Opens edit mode for the todo */
+.edit-btn {
+    background: #ffa502; /* Orange color */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 6px 10px; /* Button padding */
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background 0.3s; /* Smooth transition */
+    font-size: 14px; /* Text size */
+    height: 32px; /* Fixed height */
+}
+
+/* Edit button hover state
+   Darker orange on hover */
+.edit-btn:hover {
+    background: #ff7f00; /* Darker orange */
+}
+
+/* Delete button
+   Removes the todo from list */
+.delete-btn {
+    background: #ff4757; /* Red color */
+    color: white; /* White icon */
+    border: none; /* No border */
+    padding: 6px 10px; /* Button padding */
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background 0.3s; /* Smooth transition */
+    font-size: 16px; /* Icon size */
+    font-weight: bold; /* Bold icon */
+    line-height: 1; /* Prevent extra spacing */
+    width: 32px; /* Fixed width for consistency */
+    height: 32px; /* Fixed height for consistency */
+    display: flex; /* Center content */
+    align-items: center; /* Vertical center */
+    justify-content: center; /* Horizontal center */
+}
+
+/* Delete button hover state
+   Darker red on hover */
+.delete-btn:hover {
+    background: #e84118; /* Darker red */
+}
+
+/* ========================================================================
+   SECTION 13: EDIT MODE STYLING
+   
+   Styles for the inline edit mode when editing an existing todo.
+   Includes edit inputs, date/time fields, and save/cancel buttons.
+   ======================================================================== */
+
+/* Edit mode container
+   Shows edit form replacing the normal todo display */
+.edit-mode-container {
+    display: flex; /* Vertical layout */
+    flex-direction: column; /* Stack elements */
+    gap: 10px; /* Space between elements */
+}
+
+/* Edit input field
+   Text field for editing todo text */
+.edit-input {
+    width: 100%; /* Full width */
+    padding: 8px 12px; /* Comfortable padding */
+    border: 2px solid #667eea; /* Primary color border */
+    border-radius: 6px; /* Rounded corners */
+    font-size: 16px; /* Readable text size */
+}
+
+/* Date and time row in edit mode
+   Contains date and time input fields */
+.edit-datetime-row {
+    display: flex; /* Horizontal layout */
+    gap: 10px; /* Space between inputs */
+}
+
+/* Edit action buttons row
+   Contains save and cancel buttons */
+.edit-actions-row {
+    display: flex; /* Horizontal layout */
+    gap: 8px; /* Space between buttons */
+    justify-content: flex-end; /* Right align buttons */
+}
+
+/* Save button in edit mode
+   Confirms edit and saves changes */
+.save-btn {
+    background: #2ecc71; /* Green color */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 8px 12px; /* Button padding */
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background 0.3s; /* Smooth transition */
+    font-size: 14px; /* Text size */
+}
+
+/* Save button hover state
+   Darker green on hover */
+.save-btn:hover {
+    background: #27ae60; /* Darker green */
+}
+
+/* Cancel button in edit mode
+   Cancels edit without saving changes */
+.cancel-btn {
+    background: #95a5a6; /* Gray color */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 8px 12px; /* Button padding */
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background 0.3s; /* Smooth transition */
+    font-size: 14px; /* Text size */
+}
+
+/* Cancel button hover state
+   Darker gray on hover */
+.cancel-btn:hover {
+    background: #7f8c8d; /* Darker gray */
+}
+
+/* ========================================================================
+   SECTION 14: EMPTY STATE
+   
+   Message displayed when there are no todos to show.
+   ======================================================================== */
+
+/* Empty state message
+   Displayed when no todos exist */
+.empty-state {
+    text-align: center; /* Center text */
+    padding: 40px 20px; /* Generous padding */
+    color: #999; /* Light gray text */
+}
+
+/* ========================================================================
+   SECTION 15: FOOTER STATS & ACTION BUTTONS
+   
+   Statistics footer showing task counts and action buttons.
+   Includes clear completed, empty all, and view history buttons.
+   ======================================================================== */
+
+/* Stats footer section
+   Displays statistics and action buttons at bottom */
+.stats {
+    display: flex; /* Horizontal layout */
+    justify-content: space-between; /* Distribute items with space */
+    align-items: center; /* Vertical centering */
+    margin-top: 20px; /* Space above stats */
+    padding-top: 20px; /* Internal padding */
+    border-top: 2px solid #e0e0e0; /* Top separator line */
+    font-size: 14px; /* Small text size */
+    color: #d5d5d5; /* Medium gray text */
+    gap: 10px; /* Space between elements */
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+}
+
+/* Action buttons group
+   Container for clear, empty, and view history buttons */
+.button-group {
+    display: flex; /* Horizontal layout */
+    gap: 8px; /* Space between buttons */
+    flex-wrap: wrap; /* Wrap to next line on small screens */
+}
+
+/* Clear completed todos button
+   Removes all finished todos from list */
+.clear-completed {
+    background: #ff6b6b; /* Light red color */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 8px 16px; /* Button padding */
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    font-size: 14px; /* Text size */
+    transition: background 0.3s; /* Smooth transition */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Clear completed button hover state
+   Darker red on hover */
+.clear-completed:hover {
+    background: #ee5a52; /* Darker red */
+}
+
+/* Empty all todos button
+   Deletes all todos from the list */
+.empty-all {
+    background: #e74c3c; /* Dark red color */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 8px 16px; /* Button padding */
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    font-size: 14px; /* Text size */
+    transition: background 0.3s; /* Smooth transition */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Empty all button hover state
+   Much darker red on hover */
+.empty-all:hover {
+    background: #c0392b; /* Much darker red */
+}
+
+/* View history button
+   Opens modal to view deleted todos history */
+.view-history {
+    background: #9b59b6; /* Purple color */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 8px 16px; /* Button padding */
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    font-size: 14px; /* Text size */
+    transition: background 0.3s; /* Smooth transition */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* View history button hover state
+   Darker purple on hover */
+.view-history:hover {
+    background: #8e44ad; /* Darker purple */
+}
+
+/* ========================================================================
+   SECTION 16: NOTIFICATION BANNER
+   
+   Notification request banner shown when app wants permission.
+   Allows users to enable browser notifications.
+   ======================================================================== */
+
+/* Notification permission banner
+   Shown when app requests notification permission */
+.notification-banner {
+    background: #fff3cd; /* Light yellow background */
+    border: 1px solid #ffc107; /* Yellow border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 12px 15px; /* Internal padding */
+    margin-bottom: 20px; /* Space below banner */
+    display: flex; /* Horizontal layout */
+    justify-content: space-between; /* Items at edges */
+    align-items: center; /* Vertical centering */
+    font-size: 14px; /* Text size */
+    flex-wrap: wrap; /* Allow wrapping */
+    gap: 10px; /* Space between content and button */
+}
+
+/* Enable button in notification banner
+   Allows user to enable notifications */
+.notification-banner button {
+    background: #ffc107; /* Yellow background */
+    border: none; /* No border */
+    padding: 6px 12px; /* Button padding */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    font-weight: 600; /* Bold text */
+    color: #333; /* Dark text */
+}
+
+/* Notification banner button hover state
+   Darker yellow on hover */
+.notification-banner button:hover {
+    background: #ffb300; /* Darker yellow */
+    font-size: 14px;
+    height: 32px;
+}
+
+.edit-btn:hover {
+    background: #ff7f00;
+}
+
+.delete-btn {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-btn:hover {
+    background: #e84118;
+}
+
+/* EDIT MODE */
+.edit-mode-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.edit-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid #667eea;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.edit-datetime-row {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-actions-row {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.save-btn {
+    background: #2ecc71;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 14px;
+}
+
+.save-btn:hover {
+    background: #27ae60;
+}
+
+.cancel-btn {
+    background: #95a5a6;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 14px;
+}
+
+.cancel-btn:hover {
+    background: #7f8c8d;
+}
+
+/* EMPTY STATE */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+}
+
+/* FOOTER STATS */
+.stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid #e0e0e0;
+    font-size: 14px;
+    color: #897c7c;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.button-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.clear-completed, .empty-all, .view-history {
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+    white-space: nowrap;
+}
+
+.clear-completed {
+    background: #ff6b6b;
+}
+
+.clear-completed:hover {
+    background: #ee5a52;
+}
+
+.empty-all {
+    background: #e74c3c;
+}
+
+.empty-all:hover {
+    background: #c0392b;
+}
+
+.view-history {
+    background: #9b59b6;
+}
+
+.view-history:hover {
+    background: #8e44ad;
+}
+
+/* NOTIFICATION BANNER */
+.notification-banner {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.notification-banner button {
+    background: #ffc107;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #333;
+}
+
+.notification-banner button:hover {
+    background: #ffb300;
+}
+
+/* ========================================================================
+   SECTION 17: FOOTER BRANDING
+   
+   Application footer with branding information.
+   Centered at the bottom of the app container.
+   ======================================================================== */
+
+/* App footer branding section
+   Displays app information and copyright at bottom */
+.app-footer {
+    margin-top: 20px; /* Space above footer */
+    text-align: center; /* Center text alignment */
+    font-size: 13px; /* Small text size */
+    color: rgba(255, 255, 255, 0.85); /* Light text with transparency */
+    letter-spacing: 0.5px; /* Slight letter spacing for elegance */
+}
+
+/* ========================================================================
+   SECTION 18: HISTORY MODAL & DIALOG
+   
+   Modal dialog for viewing deleted todos history.
+   Includes list of deleted items with restore functionality.
+   ======================================================================== */
+
+/* History modal overlay
+   Full-screen semi-transparent backdrop behind modal */
+.history-modal {
+    position: fixed; /* Fixed positioning to cover viewport */
+    top: 0; /* Top edge */
+    left: 0; /* Left edge */
+    right: 0; /* Right edge */
+    bottom: 0; /* Bottom edge */
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark backdrop */
+    display: flex; /* Flexbox for centering */
+    align-items: center; /* Vertical centering */
+    justify-content: center; /* Horizontal centering */
+    z-index: 1000; /* High z-index to appear on top */
+    padding: 20px; /* Padding for viewport edges */
+}
+
+/* History modal content container
+   The actual modal dialog box with glassmorphism effect */
+.history-content {
+    background: var(--card-bg); /* Card background from theme */
+    border-radius: 12px; /* Rounded corners */
+    width: 90%; /* 90% of viewport width */
+    max-width: 600px; /* Maximum width for large screens */
+    max-height: 80vh; /* Maximum height as viewport percentage */
+    display: flex; /* Flexbox layout */
+    flex-direction: column; /* Stack elements vertically */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); /* Drop shadow for depth */
+    backdrop-filter: blur(20px); /* Glassmorphism blur effect */
+}
+
+/* History modal header
+   Title and close button */
+.history-header {
+    display: flex; /* Horizontal layout */
+    justify-content: space-between; /* Title on left, close on right */
+    align-items: center; /* Vertical centering */
+    padding: 20px; /* Internal padding */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
+}
+
+/* History modal title
+   "History" or "Deleted Items" heading */
+.history-header h2 {
+    margin: 0; /* Remove default margin */
+    color: var(--text-main); /* Text color from theme */
+    font-size: 1.5em; /* Large heading size */
+}
+
+/* Close button for history modal
+   Clickable X button to close modal */
+.close-history {
+    background: none; /* No background */
+    border: none; /* No border */
+    font-size: 24px; /* Large icon size */
+    cursor: pointer; /* Pointer cursor */
+    color: var(--text-main); /* Text color from theme */
+    transition: transform 0.2s; /* Smooth scale transition */
+}
+
+/* Close button hover state
+   Enlarges slightly on hover */
+.close-history:hover {
+    transform: scale(1.2); /* Enlarge by 20% */
+}
+
+/* History list
+   Contains all deleted todo items */
+#historyList {
+    list-style: none; /* Remove default list styling */
+    padding: 0; /* No padding */
+    margin: 0; /* No margin */
+    overflow-y: auto; /* Vertical scrolling when needed */
+    flex: 1; /* Take remaining vertical space */
+}
+
+/* Individual history item
+   Represents a deleted todo in the history */
+.history-item {
+    padding: 15px 20px; /* Internal padding */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Subtle separator */
+    display: flex; /* Horizontal layout */
+    justify-content: space-between; /* Items at edges */
+    align-items: center; /* Vertical centering */
+    transition: background 0.2s; /* Smooth hover transition */
+    gap: 10px; /* Space between content and button */
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+}
+
+/* History item hover state
+   Subtle highlight on hover */
+.history-item:hover {
+    background: rgba(255, 255, 255, 0.05); /* Slightly lighter background */
+}
+
+/* History item content wrapper
+   Contains text and details */
+.history-item-content {
+    flex: 1; /* Take remaining space */
+    min-width: 200px; /* Minimum width to prevent squishing */
+}
+
+/* History item text
+   The deleted todo text content */
+.history-text {
+    color: var(--text-main); /* Text color from theme */
+    font-weight: 500; /* Medium weight */
+    margin-bottom: 8px; /* Space below text */
+    word-wrap: break-word; /* Wrap long text */
+}
+
+/* History item details container
+   Shows date, time, and status information */
+.history-details {
+    display: flex; /* Horizontal layout */
+    gap: 12px; /* Space between detail items */
+    flex-wrap: wrap; /* Allow wrapping */
+    font-size: 12px; /* Small text size */
+    color: rgba(255, 255, 255, 0.7); /* Semi-transparent text */
+}
+
+/* History item metadata badges
+   Date, time, and status information */
+.history-date, .history-time, .history-status {
+    padding: 2px 8px; /* Small padding */
+    background: rgba(255, 255, 255, 0.1); /* Subtle background */
+    border-radius: 4px; /* Rounded corners */
+}
+
+/* Restore button
+   Restores a deleted todo back to the main list */
+.restore-btn {
+    background: var(--primary); /* Primary color background */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 6px 12px; /* Small padding */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    font-size: 12px; /* Small text size */
+    transition: opacity 0.2s; /* Smooth opacity transition */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Restore button hover state
+   Slightly transparent on hover */
+.restore-btn:hover {
+    opacity: 0.8; /* 80% opacity */
+}
+
+/* History modal action buttons row
+   Contains clear history and close buttons */
+.history-actions {
+    display: flex; /* Horizontal layout */
+    gap: 10px; /* Space between buttons */
+    padding: 15px 20px; /* Internal padding */
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Top separator */
+}
+
+/* Clear history and close buttons
+   Both action buttons at bottom of modal */
+.clear-history-btn, .close-history-btn {
+    flex: 1; /* Equal width distribution */
+    padding: 10px 15px; /* Button padding */
+    border: none; /* No border */
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    font-size: 14px; /* Text size */
+    transition: background 0.3s; /* Smooth transition */
+}
+
+/* Clear history button
+   Removes all deleted todos from history */
+.clear-history-btn {
+    background: #e74c3c; /* Red background */
+    color: white; /* White text */
+}
+
+/* Clear history button hover state
+   Darker red on hover */
+.clear-history-btn:hover {
+    background: #c0392b; /* Darker red */
+}
+
+/* Close history modal button
+   Closes the history modal without actions */
+.close-history-btn {
+    background: var(--primary); /* Primary color background */
+    color: white; /* White text */
+}
+
+/* Close history button hover state
+   Slightly transparent on hover */
+.close-history-btn:hover {
+    opacity: 0.8; /* 80% opacity */
+}
+
+/* ========================================================================
+   SECTION 19: RESPONSIVE DESIGN - TABLET & MEDIUM SCREENS
+   
+   Media query for screens 768px and below (tablets and medium devices).
+   Adjusts layout, font sizes, and spacing for better mobile experience.
+   ======================================================================== */
+
+@media screen and (max-width: 768px) {
+    /* Body adjustments for tablet screens */
+    body {
+        padding: 10px; /* Reduced padding */
+    }
+    
+    /* Container adjustments for tablet */
+    .container {
+        padding: 15px; /* Reduced padding */
+        max-width: 100%; /* Full width on tablet */
+    }
+    
+    /* Header adjustments - stack vertically */
+    .app-header {
+        flex-direction: column; /* Stack items vertically */
+        gap: 10px; /* Reduced gap */
+    }
+    
+    /* Header text alignment */
+    .app-header-text {
+        align-items: center; /* Center align items */
+        text-align: center; /* Center text */
+    }
+    
+    /* Logo size adjustment */
+    .app-logo {
+        width: 70px; /* Reduced width */
+        height: 70px; /* Reduced height */
+    }
+    
+    /* Title size adjustment */
+    .app-title {
+        font-size: 1.8em; /* Smaller heading */
+    }
+    
+    /* Motto size adjustment */
+    .app-motto {
+        font-size: 0.9em; /* Smaller text */
+    }
+    
+    /* Date/time inputs - keep on one line with smaller sizes */
+    .datetime-add-row {
+        flex-direction: row; /* Keep horizontal layout */
+        gap: 8px; /* Reduced gap between elements */
+    }
+    
+    /* Date/time inputs responsive sizing */
+    .datetime-input {
+        flex: 0 1 90px; /* Flexible width, prefer 90px but can shrink */
+        padding: 6px 8px; /* Even smaller padding */
+        font-size: 12px; /* Smaller font */
+    }
+    
+    /* Add button responsive sizing */
+    #addBtn {
+        flex: 0 0 auto; /* Don't shrink below content */
+        padding: 6px 14px; /* Smaller padding */
+        font-size: 13px; /* Smaller font */
+    }
+    
+    /* Filter buttons adjustments */
+    .filters {
+        gap: 8px; /* Reduced gap */
+    }
+    
+    /* Filter button smaller */
+    .filter-btn {
+        padding: 6px 12px; /* Reduced padding */
+        font-size: 13px; /* Smaller text */
+    }
+    
+    /* Stats section stack vertically */
+    .stats {
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start; /* Left align */
+        gap: 15px; /* Increased gap for spacing */
+    }
+    
+    /* Action buttons group full width */
+    .button-group {
+        width: 100%; /* Full width */
+        flex-direction: column; /* Stack vertically */
+    }
+    
+    /* Clear, empty, and view history buttons full width */
+    .clear-completed,
+    .empty-all,
+    .view-history {
+        width: 100%; /* Full width */
+    }
+    
+    /* Todo main row adjustments */
+    .todo-main-row {
+        flex-wrap: wrap; /* Allow wrapping */
+    }
+    
+    /* Todo actions move below content */
+    .todo-actions {
+        width: 100%; /* Full width */
+        justify-content: flex-end; /* Right align */
+        margin-top: 8px; /* Space above */
+    }
+    
+    /* Edit datetime row stack vertically */
+    .edit-datetime-row {
+        flex-direction: column; /* Stack vertically */
+    }
+    
+    /* History modal maximum height adjustment */
+    .history-content {
+        max-height: 90vh; /* Increased height for tablet */
+    }
+    
+    /* History header padding adjustment */
+    .history-header {
+        padding: 15px; /* Reduced padding */
+    }
+    
+    /* History header title size adjustment */
+    .history-header h2 {
+        font-size: 1.2em; /* Smaller heading */
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 15px;
+        max-width: 100%;
+    }
+    
+    .app-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .app-header-text {
+        align-items: center;
+        text-align: center;
+    }
+    
+    .app-logo {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .app-title {
+        font-size: 1.8em;
+    }
+    
+    .app-motto {
+        font-size: 0.9em;
+    }
+    
+    /* Date/time inputs - stack vertically on very small screens */
+    .datetime-add-row {
+        flex-direction: column;
+        gap: 6px; /* Reduced gap */
+    }
+    
+    /* Full width inputs on mobile */
+    .datetime-input {
+        width: 100%; /* Full width on very small screens */
+        padding: 6px 8px; /* Small padding */
+        font-size: 12px; /* Small font */
+    }
+    
+    /* Full width add button on mobile */
+    #addBtn {
+        width: 100%; /* Full width on very small screens */
+        padding: 8px; /* Reduced padding */
+        font-size: 13px; /* Small font */
+    }
+    
+    .filters {
+        gap: 8px;
+    }
+    
+    .filter-btn {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+    
+    .stats {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .button-group {
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .clear-completed,
+    .empty-all,
+    .view-history {
+        width: 100%;
+    }
+    
+    .todo-main-row {
+        flex-wrap: wrap;
+    }
+    
+    .todo-actions {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 8px;
+    }
+    
+    .edit-datetime-row {
+        flex-direction: column;
+    }
+    
+    .history-content {
+        max-height: 90vh;
+    }
+    
+    .history-header {
+        padding: 15px;
+    }
+    
+    .history-header h2 {
+        font-size: 1.2em;
+    }
+}
+
+/* ========================================================================
+   SECTION 20: RESPONSIVE DESIGN - MOBILE PHONES
+   
+   Media query for screens 480px and below (small mobile devices).
+   Further optimizes layout and sizing for tiny screens and phones.
+   ======================================================================== */
+
+@media screen and (max-width: 480px) {
+    /* Title size adjustment for small phones */
+    .app-title {
+        font-size: 1.5em; /* Much smaller heading */
+    }
+    
+    /* Logo size adjustment for small phones */
+    .app-logo {
+        width: 60px; /* Reduced width */
+        height: 60px; /* Reduced height */
+    }
+    
+    /* Theme toggle button size adjustment */
+    .theme-toggle {
+        width: 38px; /* Smaller button */
+        height: 38px; /* Smaller button */
+        font-size: 16px; /* Smaller icon */
+    }
+    
+    /* Todo input field font adjustment */
+    #todoInput {
+        font-size: 14px; /* Smaller text */
+    }
+    
+    /* Todo text font adjustment */
+    .todo-text {
+        font-size: 14px; /* Smaller text */
+    }
+    
+    /* Filter button adjustments for mobile */
+    .filter-btn {
+        font-size: 12px; /* Smaller text */
+        padding: 6px 10px; /* Reduced padding */
+    }
+    
+    /* Filter counter badge size adjustment */
+    .filter-btn .counter {
+        width: 20px; /* Smaller badge */
+        height: 20px; /* Smaller badge */
+        font-size: 10px; /* Smaller number */
+    }
+}
