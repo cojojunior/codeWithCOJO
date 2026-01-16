@@ -827,3 +827,31 @@ rescheduleReminders();
 
 // Initial render of the todo list
 render();
+
+// Initialize floating-label behavior for date/time inputs
+function initDateTimePlaceholders() {
+    const inputs = [todoDate, todoTime];
+
+    // Helper to update has-value class based on current value
+    function updateHasValue(el) {
+        if (el.value) el.classList.add('has-value');
+        else el.classList.remove('has-value');
+    }
+
+    // Set initial state
+    inputs.forEach(inp => {
+        if (!inp) return;
+        updateHasValue(inp);
+
+        // Update on input/change
+        inp.addEventListener('input', () => updateHasValue(inp));
+        inp.addEventListener('change', () => updateHasValue(inp));
+
+        // Also update on focus/blur to ensure label hides while active
+        inp.addEventListener('focus', () => inp.classList.add('has-value'));
+        inp.addEventListener('blur', () => updateHasValue(inp));
+    });
+}
+
+// Run placeholder init
+initDateTimePlaceholders();
