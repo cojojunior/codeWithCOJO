@@ -1,62 +1,203 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"> <!-- character encoding -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- responsive design -->
-    <title>Organise Your Life</title> <!-- page title -->
-    <link rel="stylesheet" href="style.css"> <!-- link to external CSS -->
+    <!-- Specifies character encoding as UTF-8 for proper text handling -->
+    <meta charset="UTF-8">
+    
+    <!-- Viewport meta tag ensures proper rendering on mobile devices and allows scaling -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Page title displayed in browser tab and search results -->
+    <title>TASKFLOW</title>
+    
+    <!-- Links the favicon image to appear in browser tabs and bookmarks -->
+    <link rel="icon" type="image/png" href="img/taskflow.png">
+    
+    <!-- Links the external CSS stylesheet for styling the entire application -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- PWA (Progressive Web App) configuration -->
+    <!-- Links the manifest file containing PWA metadata and app configuration -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Sets the browser theme color (used in mobile address bars and PWA) -->
+    <meta name="theme-color" content="#667eea">
+
+<!-- Closing head tag -->
 </head>
+
+<!-- Body element contains all visible page content -->
 <body>
-    <!-- Main container card -->
+    <!-- Theme toggle button - allows users to switch between dark and light themes -->
+    <!-- Uses moon emoji (🌙) as icon and has tooltip describing its function -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle Theme">🌙</button>
+
+    <!-- Main container div - wraps all app content with glassmorphism styling -->
+    <!-- Uses flexbox layout and has background blur effect from CSS -->
     <div class="container">
-        <!-- App title -->
-        <h1>📝 My To-Do List</h1>
         
-        <!-- Notification permission banner (shown when needed) -->
-        <div id="notificationBanner" class="notification-banner" style="display: none;">
+        <!-- App header section - contains logo and branding -->
+        <div class="app-header">
+            <!-- Logo image - displays TASKFLOW logo with pulsing animation -->
+            <!-- app-logo class provides styling and animation effects -->
+            <img src="img/taskflow.png" alt="TASKFLOW Logo" class="app-logo">
+            
+            <!-- Container for title and motto text -->
+            <div class="app-header-text">
+                <!-- Main application title - primary heading in white text -->
+                <!-- Uses semantic h1 tag for page structure and accessibility -->
+                <h1 class="app-title">TASKFLOW</h1>
+                
+                <!-- App tagline/motto - descriptive text under the title -->
+                <!-- Smaller gray italic text that explains the app's philosophy -->
+                <div class="app-motto">Where productivity flows naturally</div>
+            </div>
+        </div>
+
+        <!-- Notification banner - prompts users to enable browser notifications -->
+        <!-- Hidden by default with display:none; shown by JavaScript when needed -->
+        <!-- Contains message and button to request notification permission -->
+        <div id="notificationBanner" class="notification-banner" style="display:none;">
+            <!-- Text explaining the purpose of enabling notifications -->
             <span>Enable notifications to get reminders for your tasks</span>
+            
+            <!-- Button to trigger notification permission request -->
+            <!-- Calls requestNotificationPermission() function when clicked -->
             <button onclick="requestNotificationPermission()">Enable</button>
         </div>
 
-        <!-- Input section for adding new tasks -->
+        <!-- Input section - contains fields for adding new todos -->
         <div class="input-container">
-            <input type="text" id="todoInput" placeholder="What needs to be done?" />
+            <!-- Text input field for todo title/description -->
+            <!-- Placeholder text guides users on what to enter -->
+            <!-- id used for JavaScript DOM access -->
+            <input type="text" id="todoInput" placeholder="What needs to be done?">
+            
+            <!-- Row container for date, time inputs and add button -->
+            <!-- Uses flexbox for horizontal layout -->
             <div class="datetime-add-row">
-                <input type="date" id="todoDate" class="datetime-input" />
-                <input type="time" id="todoTime" class="datetime-input" />
+                <!-- Date picker input field for setting todo due date -->
+                <!-- min attribute prevents selecting dates in the past -->
+                <!-- datetime-input class for consistent styling -->
+                <!-- placeholder shows "Date" to help users identify the field -->
+                <input type="date" id="todoDate" class="datetime-input" placeholder="Date" min="">
+                
+                <!-- Time picker input field for setting reminder time -->
+                <!-- Works with date field to schedule reminders -->
+                <!-- datetime-input class for matching styling with date input -->
+                <!-- placeholder shows "Time" to help users identify the field -->
+                <input type="time" id="todoTime" class="datetime-input" placeholder="Time">
+                
+                <!-- Primary action button to add new todo to the list -->
+                <!-- Triggers addTodo() function when clicked -->
+                <!-- Styled with primary color and bold text for visibility -->
                 <button id="addBtn">Add</button>
             </div>
         </div>
 
-        <!-- Filter buttons with counters -->
+        <!-- Filter buttons section - allows viewing todos by status -->
+        <!-- Uses flexbox layout to display buttons horizontally with wrapping -->
         <div class="filters">
-            <button class="filter-btn active" data-filter="all">
-                All
-                <span class="counter" id="allCount">0</span>
-            </button>
-            <button class="filter-btn" data-filter="active">
-                Active
-                <span class="counter" id="activeCount">0</span>
-            </button>
-            <button class="filter-btn" data-filter="completed">
-                Completed
-                <span class="counter" id="completedCount">0</span>
-            </button>
+            <!-- "All" filter button - shows all todos regardless of status -->
+            <!-- data-filter attribute stores the filter type for JavaScript -->
+            <!-- active class highlights the currently selected filter -->
+            <!-- Counter span shows total number of todos -->
+            <button class="filter-btn active" data-filter="all">All <span class="counter" id="allCount">0</span></button>
+            
+            <!-- "Active" filter button - shows only incomplete todos -->
+            <!-- Counter span displays number of active (incomplete) tasks -->
+            <button class="filter-btn" data-filter="active">Active <span class="counter" id="activeCount">0</span></button>
+            
+            <!-- "Completed" filter button - shows only finished todos -->
+            <!-- Counter span displays number of completed tasks -->
+            <button class="filter-btn" data-filter="completed">Completed <span class="counter" id="completedCount">0</span></button>
         </div>
 
-        <!-- Main list where tasks will be rendered -->
+        <!-- Main todo list - unordered list that displays all todos -->
+        <!-- Items are dynamically added/removed by JavaScript -->
+        <!-- id used by JavaScript to access and manipulate the list -->
         <ul id="todoList"></ul>
 
-        <!-- Footer with stats and bulk actions -->
+        <!-- Statistics and action buttons section at bottom of container -->
+        <!-- Displays item count and provides bulk action buttons -->
         <div class="stats">
+            <!-- Displays count of incomplete todos remaining -->
+            <!-- Updated dynamically by JavaScript when todos change -->
             <span id="itemsLeft">0 items left</span>
+            
+            <!-- Container for action buttons (clear, empty, view history) -->
+            <!-- Uses flexbox to arrange buttons horizontally with wrapping -->
             <div class="button-group">
+                <!-- Button to remove all completed todos from list -->
+                <!-- Confirmation dialog prevents accidental deletion -->
+                <!-- clear-completed class provides red styling -->
                 <button class="clear-completed" id="clearCompleted">Clear Completed</button>
+                
+                <!-- Button to delete all todos at once -->
+                <!-- Confirmation dialog required before deletion -->
+                <!-- empty-all class provides dark red styling -->
                 <button class="empty-all" id="emptyAll">Empty All Tasks</button>
+                
+                <!-- Button to view history of deleted todos -->
+                <!-- Opens modal dialog showing deleted items with restore option -->
+                <!-- view-history class provides purple styling -->
+                <!-- 📋 emoji indicates history/record functionality -->
+                <button class="view-history" id="viewHistory">📋 History</button>
+            </div>
+        </div>
+
+        <!-- App footer - contains branding and attribution -->
+        <!-- Positioned at bottom with smaller text -->
+        <!-- Centered alignment and reduced opacity for subtle appearance -->
+        <footer class="app-footer">
+            <!-- Attribution text crediting app creator -->
+            <!-- CodewithCOJO is bolded for emphasis -->
+            TASKFLOW by <strong>CodewithCOJO</strong>
+        </footer>
+    </div>
+
+    <!-- Modal dialog for viewing task history -->
+    <!-- Hidden by default with display:none; shown when user clicks History button -->
+    <!-- Semi-transparent overlay covers entire page when visible -->
+    <div id="historyModal" class="history-modal" style="display:none;">
+        <!-- History modal content container -->
+        <!-- Uses flexbox layout with glassmorphism styling -->
+        <div class="history-content">
+            <!-- Modal header with title and close button -->
+            <!-- Flexbox layout with space-between for alignment -->
+            <div class="history-header">
+                <!-- Modal title - describes the content being displayed -->
+                <h2>Task History</h2>
+                
+                <!-- Close button (×) to dismiss the modal -->
+                <!-- onclick attribute calls closeHistory() function -->
+                <!-- Large font size makes it easily clickable -->
+                <button class="close-history" onclick="closeHistory()">×</button>
+            </div>
+            
+            <!-- List displaying deleted todos with restore functionality -->
+            <!-- Items dynamically generated by JavaScript -->
+            <!-- Scrollable when content exceeds visible height -->
+            <ul id="historyList"></ul>
+            
+            <!-- Modal footer with action buttons -->
+            <!-- Two buttons: clear all history and close modal -->
+            <div class="history-actions">
+                <!-- Button to permanently delete all history -->
+                <!-- Confirmation dialog prevents accidental deletion -->
+                <!-- clear-history-btn class provides red styling -->
+                <button class="clear-history-btn" id="clearHistory">Clear History</button>
+                
+                <!-- Button to close modal without taking action -->
+                <!-- close-history-btn class provides primary color styling -->
+                <button class="close-history-btn" onclick="closeHistory()">Close</button>
             </div>
         </div>
     </div>
-    <script src="script.js"></script> <!-- link to external JavaScript -->
+
+    <!-- Script tag linking to external JavaScript file -->
+    <script src="script.js"></script> 
 </body>
+
+<!-- Closing HTML tag -->
 </html>
