@@ -1,0 +1,15 @@
+{
+  "name": "TASKFLOW",
+  "short_name": "TASKFLOW",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "icons": [
+    {
+      "src": "taskflow-logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
