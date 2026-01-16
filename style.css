@@ -1337,12 +1337,12 @@ input {
 @media screen and (max-width: 768px) {
     /* Body adjustments for tablet screens */
     body {
-        padding: 10px; /* Reduced padding */
+        padding: 60px; /* Reduced padding */
     }
     
     /* Container adjustments for tablet */
     .container {
-        padding: 15px; /* Reduced padding */
+        padding: 25px; /* Reduced padding */
         max-width: 100%; /* Full width on tablet */
     }
     
@@ -1375,7 +1375,7 @@ input {
     }
     
     /* Date/time inputs - keep on one line with smaller sizes */
-    .datetime-add-row {
+    #todoDate, #todoTime {
         flex-direction: row; /* Keep horizontal layout */
         gap: 8px; /* Reduced gap between elements */
     }
@@ -1389,6 +1389,7 @@ input {
     
     /* Add button responsive sizing */
     #addBtn {
+        flex-direction: column; 
         flex: 0 0 auto; /* Don't shrink below content */
         padding: 6px 14px; /* Smaller padding */
         font-size: 13px; /* Smaller font */
@@ -1422,7 +1423,7 @@ input {
     .clear-completed,
     .empty-all,
     .view-history {
-        width: 100%; /* Full width */
+        width: 40%; /* Full width */
     }
     
     /* Todo main row adjustments */
@@ -1487,21 +1488,22 @@ input {
     }
     
     /* Date/time inputs - stack vertically on very small screens */
-    .datetime-add-row {
-        flex-direction: column;
+    .datetime-input {
+        flex-direction: row;
         gap: 6px; /* Reduced gap */
     }
+
     
     /* Full width inputs on mobile */
     .datetime-input {
-        width: 100%; /* Full width on very small screens */
+        width: 50%; /* Full width on very small screens */
         padding: 6px 8px; /* Small padding */
         font-size: 12px; /* Small font */
     }
     
     /* Full width add button on mobile */
     #addBtn {
-        width: 100%; /* Full width on very small screens */
+        width: 65%; /* Full width on very small screens */
         padding: 8px; /* Reduced padding */
         font-size: 13px; /* Small font */
     }
@@ -1567,9 +1569,28 @@ input {
    ======================================================================== */
 
 @media screen and (max-width: 480px) {
-    /* Title size adjustment for small phones */
-    .app-title {
-        font-size: 1.5em; /* Much smaller heading */
+    body {
+        padding: 10px; /* Minimal padding on very small screens */
+        width: 100%;
+        margin: 0; /* Remove default body margin */
+    }
+
+    .container {
+        margin-top: 15%; /* Center container vertically */
+        width: 100%; /* Full width on mobile */
+        padding: 12px; /* Minimal padding */
+    }
+    
+    /* Header adjustments for mobile */
+    .app-header {
+        flex-direction: column; /* Stack vertically */
+        gap: 8px; /* Reduced gap */
+        margin-bottom: 15px; /* Reduced margin */
+    }
+    
+    .app-header-text {
+        align-items: center;
+        text-align: center;
     }
     
     /* Logo size adjustment for small phones */
@@ -1578,24 +1599,61 @@ input {
         height: 60px; /* Reduced height */
     }
     
+    /* Title size adjustment for small phones */
+    .app-title {
+        font-size: 1.5em; /* Much smaller heading */
+    }
+    
+    /* Motto size adjustment */
+    .app-motto {
+        font-size: 0.85em; /* Smaller text */
+    }
+    
     /* Theme toggle button size adjustment */
     .theme-toggle {
-        width: 38px; /* Smaller button */
-        height: 38px; /* Smaller button */
+        width: 36px; /* Smaller button */
+        height: 36px; /* Smaller button */
         font-size: 16px; /* Smaller icon */
+        top: 12px; /* Closer to top */
+        right: 12px; /* Closer to right */
     }
     
-    /* Todo input field font adjustment */
+    /* Input field adjustments */
     #todoInput {
         font-size: 14px; /* Smaller text */
+        padding: 10px 12px; /* Reduced padding */
+        margin-bottom: 8px; /* Reduced margin */
     }
     
-    /* Todo text font adjustment */
-    .todo-text {
-        font-size: 14px; /* Smaller text */
+    /* Date/time inputs remain on one line on mobile */
+    .datetime-add-row {
+        flex-direction: row; /* Keep horizontal layout */
+        gap: 6px; /* Minimal gap between inputs */
     }
     
-    /* Filter button adjustments for mobile */
+    /* Date and time inputs - compact sizing on mobile */
+    .datetime-input {
+        flex: 1; /* Equal width distribution */
+        padding: 8px 8px; /* Very small padding */
+        font-size: 11px; /* Tiny font */
+        width: 20px; /* Allow shrinking below min-width */
+    }
+    
+    /* Add button - compact on mobile */
+    #addBtn {
+        width: 20px;
+        flex: 0 0 auto; /* Don't shrink below content */
+        padding: 8px 10px; /* Minimal padding */
+        font-size: 12px; /* Small font */
+        white-space: nowrap; /* Keep text on one line */
+    }
+    
+    /* Filter buttons adjustments for mobile */
+    .filters {
+        gap: 6px; /* Reduced gap */
+        margin-bottom: 12px; /* Reduced margin */
+    }
+    
     .filter-btn {
         font-size: 12px; /* Smaller text */
         padding: 6px 10px; /* Reduced padding */
@@ -1603,8 +1661,109 @@ input {
     
     /* Filter counter badge size adjustment */
     .filter-btn .counter {
-        width: 20px; /* Smaller badge */
-        height: 20px; /* Smaller badge */
-        font-size: 10px; /* Smaller number */
+        width: 18px; /* Smaller badge */
+        height: 18px; /* Smaller badge */
+        font-size: 9px; /* Smaller number */
+        top: -6px; /* Adjusted position */
+        right: -6px; /* Adjusted position */
+    }
+    
+    /* Todo text font adjustment */
+    .todo-text {
+        font-size: 14px; /* Smaller text */
+    }
+    
+    /* Todo item adjustments */
+    .todo-item {
+        padding: 10px; /* Reduced padding */
+        margin-bottom: 8px; /* Reduced margin */
+    }
+    
+    /* Todo main row adjustments */
+    .todo-main-row {
+        flex-wrap: wrap; /* Allow wrapping */
+        gap: 8px; /* Reduced gap */
+    }
+    
+    /* Todo actions adjustments */
+    .todo-actions {
+        gap: 4px; /* Reduced gap */
+        width: 100%; /* Full width */
+    }
+    
+    /* Edit mode adjustments */
+    .edit-mode-container {
+        gap: 6px; /* Reduced gap */
+    }
+    
+    .edit-datetime-row {
+        flex-direction: row; /* Keep on same line */
+        gap: 6px; /* Minimal gap */
+    }
+    
+    .edit-actions-row {
+        gap: 6px; /* Reduced gap */
+    }
+    
+    /* Stats adjustments */
+    .stats {
+        flex-direction: column; /* Stack vertically */
+        align-items: flex-start; /* Left align */
+        gap: 10px; /* Reduced gap */
+        margin-top: 15px; /* Reduced margin */
+        padding-top: 15px; /* Reduced padding */
+        font-size: 12px; /* Smaller font */
+    }
+    
+    /* Button group adjustments */
+    .button-group {
+        width: 100%; /* Full width */
+        flex-direction: column; /* Stack vertically */
+        gap: 6px; /* Reduced gap */
+    }
+    
+    /* Action buttons full width */
+    .clear-completed,
+    .empty-all,
+    .view-history {
+        width: 100%; /* Full width */
+        padding: 8px 12px; /* Reduced padding */
+        font-size: 12px; /* Smaller font */
+    }
+    
+    /* History modal adjustments */
+    .history-modal {
+        padding: 10px; /* Minimal padding */
+    }
+    
+    .history-content {
+        width: 95%; /* Full width with minimal margin */
+        max-height: 85vh; /* Adjusted height */
+        border-radius: 8px; /* Reduced border radius */
+    }
+    
+    .history-header {
+        padding: 12px; /* Reduced padding */
+    }
+    
+    .history-header h2 {
+        font-size: 1.2em; /* Smaller heading */
+    }
+    
+    .history-item {
+        padding: 10px 12px; /* Reduced padding */
+        flex-direction: column; /* Stack content */
+        align-items: flex-start; /* Left align */
+        gap: 8px; /* Reduced gap */
+    }
+    
+    .history-details {
+        font-size: 11px; /* Smaller font */
+        width: 100%; /* Full width */
+    }
+    
+    .restore-btn {
+        width: 100%; /* Full width */
+        padding: 8px 10px; /* Reduced padding */
     }
 }
